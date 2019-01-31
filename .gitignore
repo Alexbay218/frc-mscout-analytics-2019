@@ -1,0 +1,8 @@
+node_modules/
+semantic/src/
+semantic/tasks/
+semantic/gulpfile.js
+
+matchdb
+tbadb_lm
+tbadb_team
