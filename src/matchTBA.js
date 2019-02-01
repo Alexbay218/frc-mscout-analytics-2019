@@ -9,7 +9,7 @@ class matchTBA {
     this.tbaDBTeam = new Datastore({filename: require('electron').app.getAppPath() + "\\tbadb_team"});
     this.tbaDBLm.loadDatabase(() => {
       this.tbaDBTeam.loadDatabase(() => {
-        this.syncTeam(() => {});        
+        this.syncTeam(() => {});
       });
     });
   }
@@ -93,7 +93,6 @@ class matchTBA {
             var res = [];
             if(xhttp.status == 200) {
               res = JSON.parse(xhttp.responseText);
-              console.log(res);
               var needed = res.length;
               var curr = 0;
               for(var i = 0;i < res.length;i++) {

@@ -30,7 +30,7 @@ class matchDB {
     this.dbml.find({}, (err, docs) => {
       for(var i = 0;i < docs.length;i++) {
         var obj = ml.loadMatch(docs[i]);
-        this.mtba.connectTBA(docs[i], (success, res) => {
+        this.mtba.connectTBA(obj, (success, res) => {
           this.dbm.update({team_number: res.team_number}, res, {upsert: true});
         });
       }
