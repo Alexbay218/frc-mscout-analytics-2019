@@ -1,26 +1,21 @@
 class matchTBA {
   constructor() {
     var Datastore = require('nedb');
-    this.synced = false;
+    this.synced = "not syncing";
     this.apiKey = "M7LzOvSZEzksZGkYcMjoFfKT8lpl6dDeHPUsvdkmXdQrNpbjaqto8cG1rSfirXLX";
     this.year = "2019";
     this.XMLHttpRequest = require("xhr2");
-    this.tbaDBLm = new Datastore({filename: require('electron').app.getAppPath() + "\\tbadb_lm"});
-    this.tbaDBTeam = new Datastore({filename: require('electron').app.getAppPath() + "\\tbadb_team"});
-    this.tbaDBLm.loadDatabase(() => {
-      this.tbaDBTeam.loadDatabase(() => {
-        this.syncTeam(() => {});
-      });
-    });
+    this.tbaDBLm = new Datastore({filename: require('electron').app.getAppPath() + "\\tbadb_lm", autoload: true});
+    this.tbaDBTeam = new Datastore({filename: require('electron').app.getAppPath() + "\\tbadb_team", autoload: true});
   }
   connectTBA(matchObjIn, callback) {
+    var res = {};
+    var xhttp = new this.XMLHttpRequest();
     var matchObj = Object.assign({}, matchObjIn);
     if(matchObj.matchType == "T" || matchObj.matchType == "PF" || matchObj.matchType == "PM") {
       callback(false, matchObj);
     }
     else {
-      var res = {};
-      var xhttp = new this.XMLHttpRequest();
       xhttp.onreadystatechange = () => {
         if(xhttp.readyState == 4 && (xhttp.status == 200 || xhttp.status == 304)) {
           var obj = xhttp.status == 304 ? [matchObj.eventData] : JSON.parse(xhttp.responseText);
@@ -60,13 +55,19 @@ class matchTBA {
               else if(xhttp2.readyState == 4 && xhttp2.status == 304) {
                 callback(true, matchObj);
               }
+              else if(xhttp2.readyState == 4) {
+                callback(false, matchObj);
+              }
             };
-            xhttp2.open("GET", "https://www.thebluealliance.com/api/v3/matches/" + this.year + tar.key + "_" + compLvl + matchObj.matchNumber, true);
+            xhttp2.open("GET", "https://www.thebluealliance.com/api/v3/match/" + tar.key + "_" + compLvl + matchObj.matchNumber, true);
             xhttp2.setRequestHeader("X-TBA-Auth-Key", this.apiKey);
-            if(matchObj.tbaData.lastModified.match != undefined) {
+            if(matchObj.tbaData != undefined && matchObj.tbaData.lastModified.match != undefined) {
               xhttp2.setRequestHeader("If-Modified-Since", matchObj.tbaData.lastModified.match);
             }
             xhttp2.send();
+          }
+          else {
+            callback(false, matchObj);
           }
         }
         else if(xhttp.readyState == 4) {
@@ -75,47 +76,69 @@ class matchTBA {
       };
       xhttp.open("GET", "https://www.thebluealliance.com/api/v3/team/frc" + matchObj.targetTeam.toString() + "/events/" + this.year, true);
       xhttp.setRequestHeader("X-TBA-Auth-Key", this.apiKey);
-      if(matchObj.tbaData.lastModified.event != undefined) {
+      if(matchObj.tbaData != undefined && matchObj.tbaData.lastModified.event != undefined) {
         xhttp.setRequestHeader("If-Modified-Since", matchObj.tbaData.lastModified.event);
       }
       xhttp.send();
     }
   }
-  syncTeam(callback) {
+  syncTeam(callback, eventEmitter = null) {
     var index = 0;
     var xhttp = new this.XMLHttpRequest();
+    this.synced = "syncing";
     this.tbaDBLm.find({type: "team"}, (err, docs) => {
-      var lmObj = docs[0];
+      console.log("Syncing TBADBTeam");
+      var lmObj = {};
       var run = () => {
+        console.log("\n\n");
+        console.log("Current Index is " + index);
+        console.log("Last Modified Object");
+        console.log(lmObj);
         xhttp = new this.XMLHttpRequest();
         xhttp.onreadystatechange = () => {
+          console.log("XHTTP state changed, ready state: " + xhttp.readyState);
+          console.log("XHTTP status: " + xhttp.status);
           if(xhttp.readyState == 4) {
+            var done = false;
             var res = [];
             if(xhttp.status == 200) {
+              console.log("Getting Team Data Page " + index);
               res = JSON.parse(xhttp.responseText);
-              var needed = res.length;
-              var curr = 0;
-              for(var i = 0;i < res.length;i++) {
-                var obj = res[i];
-                this.tbaDBTeam.update({key: obj.key}, obj, {upsert: true}, () => {
-                  curr++;
-                  if(curr >= needed - 1) {
+              var deleteArg = [];
+              if(res.length > 0) {
+                for(var i = 0;i < res.length;i++) {
+                  deleteArg.push(res[i].team_number);
+                }
+                if(eventEmitter != null) {eventEmitter.sender.send("query-team-sync-track",{position: res.length, total: res.length, page: index})}
+                this.tbaDBTeam.remove({team_number: { $in: deleteArg}}, {multi: true}, () => {
+                  this.tbaDBTeam.insert(res, () =>{
                     lmObj["lm" + index] = xhttp.getResponseHeader("Last-Modified");
                     index++;
                     xhttp.abort();
                     run();
-                  }
+                  });
                 });
               }
+              else {
+                done = true;
+              }
             }
-            if(xhttp.status == 304) {
+            else if(xhttp.status == 304) {
+              if(eventEmitter != null) {eventEmitter.sender.send("query-team-sync-track",{position: -1, total: 0, page: index})}
+              console.log("Skipping Team Data Page " + index);
               index++;
               xhttp.abort();
               run();
             }
             else {
+              console.log("Something went wrong, http status: " + xhttp.status);
+              done = true;
+            }
+            if(done) {
+              console.log("Updating TBADBLM Data");
               this.tbaDBLm.update({type: "team"}, lmObj, {}, () => {
-                this.synced = true;
+                console.log("TBADBTeam Data Synced");
+                this.synced = "synced";
                 callback();
               });
             }
@@ -126,15 +149,17 @@ class matchTBA {
         if(lmObj["lm" + index] != undefined) {
           xhttp.setRequestHeader("If-Modified-Since", lmObj["lm" + index]);
         }
+        console.log("HTTP Request Sent");
         xhttp.send();
-      }
+      };
       if(docs.length <= 0) {
         lmObj = {type: "team"};
-        this.tbaDBLm.insert(lmObj, {}, () => {
+        this.tbaDBLm.insert(lmObj, () => {
           run();
         });
       }
       else {
+        lmObj = docs[0];
         run();
       }
     });

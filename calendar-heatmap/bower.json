@@ -1,0 +1,35 @@
+{
+  "name": "calendar-heatmap-graph",
+  "version": "0.0.14",
+  "description": "d3.js calendar heatmap graph.",
+  "homepage": "https://github.com/g1eb/calendar-heatmap",
+  "authors": [
+    "g1eb <mail@g1eb.com> (https://g1eb.com)"
+  ],
+  "license": "MIT",
+  "main": [
+    "dist/calendar-heatmap.min.js",
+    "dist/calendar-heatmap.min.css"
+  ],
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "d3": "^4.10.2",
+    "moment": "^2.18.1"
+  },
+  "keywords": [
+    "calendar",
+    "heatmap",
+    "graph",
+    "visualisation",
+    "chart",
+    "time",
+    "d3js",
+    "d3"
+  ]
+}

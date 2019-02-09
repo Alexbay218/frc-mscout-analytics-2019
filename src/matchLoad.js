@@ -4,12 +4,19 @@ class matchLoader {
   }
   loadMatch(mlObj) {
     this.data = [];
+    if(Number.parseInt(mlObj.variableData[0].value) == 1) {
+      this.data.push({key:"c", value: 0});
+    }
+    else if(Number.parseInt(mlObj.variableData[1].value) == 1) {
+      this.data.push({key:"e", value: 0});
+    }
     for(var i = 0;i < mlObj.matchData.length;i++) {
       this.data.push({key: mlObj.matchData[i].key, value: Number.parseFloat(mlObj.matchData[i].value)});
     }
     var res = {
       raw: mlObj.raw,
       hash: this.md5(mlObj.raw),
+      credibility: mlObj.credibility,
       sourceTeam: mlObj.sourceTeam,
       targetTeam: mlObj.targetTeam,
       timeStamp: mlObj.timeStamp,
@@ -49,7 +56,7 @@ class matchLoader {
     var res = {};
     var hasRes = false;
     var stop = false;
-    var climbStart = 0;
+    var climbStart = -1;
     var lastClimb = 0;
     for(var i = this.data.length - 1;i >= 0 && !stop;i--) {
       if(this.data[i].key == "g" || this.data[i].key == "h" || this.data[i].key == "i" || this.data[i].key == "j" ||
@@ -84,6 +91,7 @@ class matchLoader {
       }
     }
     res.interval = lastClimb - climbStart;
+    if(climbStart == -1) {res.interval = 0;}
     res.timeStamp = lastClimb;
     return res;
   }

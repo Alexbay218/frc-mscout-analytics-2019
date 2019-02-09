@@ -1,0 +1,39 @@
+{
+  "name": "calendar-heatmap-graph",
+  "version": "0.0.14",
+  "description": "d3.js calendar heatmap graph.",
+  "homepage": "https://github.com/g1eb/calendar-heatmap#readme",
+  "author": "g1eb <mail@g1eb.com> (https://g1eb.com)",
+  "license": "MIT",
+  "main": "index.html",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/g1eb/calendar-heatmap.git"
+  },
+  "bugs": {
+    "url": "https://github.com/g1eb/calendar-heatmap/issues"
+  },
+  "scripts": {
+    "build": "gulp build"
+  },
+  "dependencies": {
+    "d3": "^4.10.2",
+    "moment": "^2.18.1"
+  },
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-concat": "^2.6.0",
+    "gulp-cssnano": "^2.1.2",
+    "gulp-uglify": "^1.5.3"
+  },
+  "keywords": [
+    "calendar",
+    "heatmap",
+    "graph",
+    "visualization",
+    "chart",
+    "time",
+    "d3js",
+    "d3"
+  ]
+}

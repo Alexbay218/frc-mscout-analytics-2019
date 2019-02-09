@@ -1,0 +1,122 @@
+<html>
+  <head>
+    <title>FRC Mscout Analytics 2019</title>
+    <link rel="shortcut icon" href="../assets/first.ico" type="image/x-icon"/>
+    <link rel="stylesheet" type="text/css" href="../semantic/dist/semantic.min.css">
+    <link rel="stylesheet" type="text/css" href="../calendar-heatmap/dist/calendar-heatmap.min.css">
+    <link rel="stylesheet" type="text/css" href="../tabulator-master/dist/css/semantic-ui/tabulator_semantic-ui.min.css">
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
+    <script src="../d3/d3.min.js"></script>
+    <script src="../moment/moment.min.js"></script>
+    <script src="../jquery/jquery-3.3.1.min.js"></script>
+    <script src="../semantic/dist/semantic.min.js"></script>
+    <script src="../calendar-heatmap/dist/calendar-heatmap.min.js"></script>
+    <script>if (window.module) module = window.module</script>
+    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />
+  </head>
+  <body style="overflow: hidden;">
+    <div class="ui two column grid" style="height:100%;margin: 0px;">
+      <div class="ui two wide column inverted vertical labeled icon menu equal height grid" style="height:110%;margin-top:-3px" id="sidebar"></div>
+      <div class="ui fourteen wide column" id="display" style="visibility: hidden;">
+        <div class="ui grid">
+          <div class="eight wide column">
+            <div class="ui segment">
+              <h1 class="ui dividing header">Load Matches From Folder</h1>
+              <div class="ui fluid animated button" onclick="openFiles()">
+                <div class="visible content">Open Files</div>
+                <div class="hidden content">
+                  <i class="folder open icon"></i>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="eight wide column">
+            <div class="ui segment">
+              <h1 class="ui dividing header">Rate Credibility</h1>
+              <div class="ui huge star rating" data-rating="3" data-max-rating="5"></div>
+              <div class="ui divider"></div>
+              <div id="credDisp" class="ui large label"></div>
+            </div>
+          </div>
+          <div class="sixteen wide column">
+            <div class="ui segment">
+              <h1 class="ui dividing header">Load Team Data from TBA</h1>
+              <div class="ui fluid animated blue button" onclick="syncTeam()">
+                <div class="visible content">Sync with TBA</div>
+                <div class="hidden content">
+                  <i class="cloud download icon"></i>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="eight wide column">
+            <div class="ui segment">
+              <h1 class="ui dividing header">Remove All Match Data</h1>
+              <div class="ui fluid animated red button" onclick="$('#matchModal').modal('show');">
+                <div class="visible content">Delete Everything</div>
+                <div class="hidden content">
+                  <i class="trash alternate icon"></i>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="eight wide column">
+            <div class="ui segment">
+              <h1 class="ui dividing header">Remove All Team Data</h1>
+              <div class="ui fluid animated red button" onclick="$('#teamModal').modal('show');">
+                <div class="visible content">Delete Everything</div>
+                <div class="hidden content">
+                  <i class="trash alternate icon"></i>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="ui basic modal" id="matchModal">
+            <div class="ui icon header">
+              <i class="trash alternate icon"></i>
+              Delete All Matches
+            </div>
+            <div class="content">
+              <p>Do you really want to delete all matches?</p>
+            </div>
+            <div class="actions">
+              <div class="ui red basic cancel inverted button">
+                <i class="remove icon"></i>
+                No
+              </div>
+              <div class="ui green inverted ok button" onclick="deleteFiles()">
+                <i class="checkmark icon"></i>
+                Yes
+              </div>
+            </div>
+          </div>
+          <div class="ui basic modal" id="teamModal">
+            <div class="ui icon header">
+              <i class="trash alternate icon"></i>
+              Delete All Teams
+            </div>
+            <div class="content">
+              <p>Do you really want to delete all team data?</p>
+            </div>
+            <div class="actions">
+              <div class="ui red basic cancel inverted button">
+                <i class="remove icon"></i>
+                No
+              </div>
+              <div class="ui green inverted ok button" onclick="deleteTeam()">
+                <i class="checkmark icon"></i>
+                Yes
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="ui dimmer">
+          <div class="ui text loader" id="loaderText"></div>
+        </div>
+      </div>
+    </div>
+    <script src="route.js"></script>
+    <script src="processMatches.js"></script>
+  </body>
+</html>
