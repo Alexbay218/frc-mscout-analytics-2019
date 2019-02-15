@@ -15,24 +15,126 @@
     <script>if (window.module) module = window.module</script>
     <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />
   </head>
-  <body style="overflow: hidden;">
+  <body style="overflow: auto;">
     <div class="ui two column grid" style="height:100%;margin: 0px;">
-      <div class="ui two wide column inverted vertical labeled icon menu equal height grid" style="height:110%;margin-top:-3px" id="sidebar"></div>
+      <div class="ui two wide column inverted vertical labeled icon menu equal height grid" style="height:110%;margin-top:-3px;margin-bottom: 0px;" id="sidebar"></div>
       <div class="ui fourteen wide column" id="display" style="visibility: hidden;">
         <div class="ui grid">
           <div class="eight wide column">
-            <div class="ui segment">
-              <h1 class="ui dividing header" id="teamTitle">Team ####</h1>
+            <div class="ui segment" id="teamInfo">
+              <h1 class="ui dividing header" id="teamTitle">Team ####  <i class="" id="countryFlag"></i></h1>
+              <div class="ui two column very relaxed grid">
+                <div class="column">
+                  <div class="ui label" id="teamRookieYear"><i class="calendar alternate outline icon"></i> <span id="teamRookieYearText"></span></div>
+                  <p></p>
+                  <div class="ui label" id="teamMotto"><i class="info circle icon"></i> <span id="teamMottoText"></span></div>
+                </div>
+                <div class="column">
+                  <a href="#" class="ui red right ribbon label" id="teamUrl"></a>
+                  <p></p>
+                  <a href="#" class="ui blue right ribbon label" id="tbaUrl"></a>
+                </div>
+                <div class="ui vertical divider"></div>
+              </div>
+              <p style="margin-bottom: 2em;"></p>
+              <div class="ui small three statistics" id="teamStat">
+                <div class="statistic">
+                  <div class="value">
+                    <i class="rocket icon"></i> <span id="totalMatches"></span>
+                  </div>
+                  <div class="label">matches</div>
+                </div>
+                <div class="statistic">
+                  <div class="value">
+                    <span id="avgAccuracy"></span> <i class="percent icon"></i>
+                  </div>
+                  <div class="label">scoring accuracy</div>
+                </div>
+                <div class="statistic">
+                  <div class="value">
+                    <i class="chart bar outline icon"></i> <span id="avgScore"></span>
+                  </div>
+                  <div class="label">average score</div>
+                </div>
+              </div>
             </div>
           </div>
           <div class="eight wide column">
             <div class="ui segment">
-              <canvas id="percentages"></canvas>
+              <h1 class="ui dividing header">Top Comments</h1>
+              <div class="ui relaxed divided list" id="commentList">
+              </div>
             </div>
           </div>
           <div class="sixteen wide column">
             <div class="ui segment">
               <div id="matchTable"></div>
+            </div>
+          </div>
+          <div class="eight wide column">
+            <div class="ui segment">
+              <h3 class="ui right aligned dividing header" style="margin-top: 0px;">Cargo vs Hatch by Time</h3>
+              <canvas id="cvht"></canvas>
+            </div>
+          </div>
+          <div class="eight wide column">
+            <div class="ui segment">
+              <h3 class="ui dividing header" style="margin-top: 0px;">Cargo vs Hatch by Attempts</h3>
+              <canvas id="cvha"></canvas>
+            </div>
+          </div>
+          <div class="eight wide column">
+            <div class="ui segment">
+              <h3 class="ui right aligned dividing header" style="margin-top: 0px;">Cargo vs Hatch by Score</h3>
+              <canvas id="cvhs"></canvas>
+            </div>
+          </div>
+          <div class="eight wide column">
+            <div class="ui segment">
+              <h3 class="ui dividing header" style="margin-top: 0px;">Cargo Ship vs Rocket Levels by Time</h3>
+              <canvas id="csvrt"></canvas>
+            </div>
+          </div>
+          <div class="eight wide column">
+            <div class="ui segment">
+              <h3 class="ui right aligned dividing header" style="margin-top: 0px;">Cargo Ship vs Rocket Levels by Attempts</h3>
+              <canvas id="csvra"></canvas>
+            </div>
+          </div>
+          <div class="eight wide column">
+            <div class="ui segment">
+              <h3 class="ui dividing header" style="margin-top: 0px;">Cargo Ship vs Rocket Levels by Score</h3>
+              <canvas id="csvrs"></canvas>
+            </div>
+          </div>
+          <div class="eight wide column">
+            <div class="ui segment">
+              <h3 class="ui right aligned dividing header" style="margin-top: 0px;">Scoring Types by Time</h3>
+              <canvas id="svdt"></canvas>
+            </div>
+          </div>
+          <div class="eight wide column">
+            <div class="ui segment">
+              <h3 class="ui dividing header" style="margin-top: 0px;">Scoring Types by Score</h3>
+              <canvas id="svds"></canvas>
+            </div>
+          </div>
+          <div class="sixteen wide column">
+            <div class="ui segment">
+              <h3 class="ui dividing header" style="margin-top: 0px;">Scoring over Time</h3>
+              <canvas id="sot"></canvas>
+            </div>
+          </div>
+          <div class="sixteen wide column">
+            <div class="ui segment">
+              <h3 class="ui dividing header" style="margin-top: 0px;">Cargo Accuracy over Time</h3>
+              <canvas id="cot"></canvas>
+            </div>
+          </div>
+          <div class="sixteen wide column">
+            <div class="ui segment">
+              <h3 class="ui dividing header" style="margin-top: 0px;">Hatch Accuracy over Time</h3>
+              <canvas id="haot"></canvas>
             </div>
           </div>
         </div>
@@ -42,6 +144,7 @@
       </div>
     </div>
     <script src="route.js"></script>
+    <script src="process.js"></script>
     <script src="team.js"></script>
   </body>
 </html>

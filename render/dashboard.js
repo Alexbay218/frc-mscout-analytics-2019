@@ -84,7 +84,6 @@ var sync = () => {
     }
     $('#MatchCalBox').dimmer('hide');
     //team list
-    console.log("Waiting")
     window.setTimeout(() => {
       var queryArr = [];
       for(var i = 0;i < obj.availableTeams.length;i++) {

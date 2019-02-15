@@ -42,6 +42,16 @@ class matchDB {
     this.dbml.find(arg, (err, docs) => {
       for(var i = 0;i < docs.length;i++) {
         console.log("Processing Matches " + (i+1) + "/" + docs.length);
+        var res = this.ml.loadMatch(docs[i]);
+        console.log("Updating DBM");
+        this.dbm.update({hash: res.hash}, res, {upsert: true});
+      }
+    });
+  }
+  processWithTBA(arg) {
+    this.dbml.find(arg, (err, docs) => {
+      for(var i = 0;i < docs.length;i++) {
+        console.log("Processing Matches " + (i+1) + "/" + docs.length);
         var obj = this.ml.loadMatch(docs[i]);
         this.mtba.connectTBA(obj, (success, res) => {
           console.log("Updating DBM");

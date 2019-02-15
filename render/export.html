@@ -1,0 +1,48 @@
+<html>
+  <head>
+    <title>FRC Mscout Analytics 2019</title>
+    <link rel="shortcut icon" href="../assets/first.ico" type="image/x-icon"/>
+    <link rel="stylesheet" type="text/css" href="../semantic/dist/semantic.min.css">
+    <link rel="stylesheet" type="text/css" href="../calendar-heatmap/dist/calendar-heatmap.min.css">
+    <link rel="stylesheet" type="text/css" href="../tabulator-master/dist/css/semantic-ui/tabulator_semantic-ui.min.css">
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
+    <script src="../d3/d3.min.js"></script>
+    <script src="../moment/moment.min.js"></script>
+    <script src="../jquery/jquery-3.3.1.min.js"></script>
+    <script src="../semantic/dist/semantic.min.js"></script>
+    <script src="../calendar-heatmap/dist/calendar-heatmap.min.js"></script>
+    <script>if (window.module) module = window.module</script>
+    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />
+  </head>
+  <body style="overflow: hidden;">
+    <div class="ui two column grid" style="height:100%;margin: 0px;">
+      <div class="ui two wide column inverted vertical labeled icon menu equal height grid" style="height:110%;margin-top:-3px;" id="sidebar"></div>
+      <div class="ui fourteen wide column" id="display" style="visibility: hidden;">
+        <div class="ui grid">
+          <div class="ten wide column">
+            <div class="ui segment">
+              <h1 class="ui dividing header">Export CSV</h1>
+              <div id="dataTable"></div>
+            </div>
+          </div>
+          <div class="six wide column">
+            <div class="ui segment">
+              <h1 class="ui dividing header">Filter</h1>
+              <div class="ui search multiple selection dropdown" id="teamFilter">
+                <div class="text"></div>
+                <i class="dropdown icon"></i>
+            </div>
+            <button class="ui button" onclick="calculate()">Preview</button>
+            <button class="ui primary button" onclick="download()">Export</button>
+          </div>
+        </div>
+      </div>
+      <div class="ui dimmer">
+        <div class="ui text loader" id="loaderText"></div>
+      </div>
+    </div>
+    <script src="route.js"></script>
+    <script src="export.js"></script>
+  </body>
+</html>

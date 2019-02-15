@@ -19,6 +19,7 @@
   "homepage": "https://github.com/Alexbay218/frc-mscout-analytics-2019#readme",
   "dependencies": {
     "chart.js": "^2.7.3",
+    "country-list": "^2.1.0",
     "deep-equal": "^1.0.1",
     "electron": "^4.0.1",
     "jquery": "^3.3.1",

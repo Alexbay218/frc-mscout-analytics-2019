@@ -144,7 +144,7 @@ class matchTBA {
             }
           }
         };
-        xhttp.open("GET", "https://www.thebluealliance.com/api/v3/teams/" + index + "/simple", true);
+        xhttp.open("GET", "https://www.thebluealliance.com/api/v3/teams/" + index, true);
         xhttp.setRequestHeader("X-TBA-Auth-Key", this.apiKey);
         if(lmObj["lm" + index] != undefined) {
           xhttp.setRequestHeader("If-Modified-Since", lmObj["lm" + index]);

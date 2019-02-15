@@ -53,7 +53,7 @@ class matchLoader {
     return res;
   }
   getClimbData() {
-    var res = {};
+    var res = {level: 0};
     var hasRes = false;
     var stop = false;
     var climbStart = -1;
