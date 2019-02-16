@@ -5,6 +5,7 @@ var sync = () => {
   $('#display').dimmer({closable:false});
   $('#display').dimmer('show');
   metadata = ipcRenderer.sendSync("get-metadata");
+  document.getElementById("navSearch").value = metadata.targetTeam;
   if(metadata.targetTeam != undefined) {
     ipcRenderer.sendSync("set-metadata", {});
     ipcRenderer.on("query-team-reply", (event, docs) => {
@@ -114,8 +115,10 @@ var teamData = (team) => {
     commentsListElem.style.overflow = "auto";
     commentsListElem.style.height = document.getElementById("teamInfo").offsetHeight - 85 + "px";
     charts(tableData);
-    $('#display').dimmer('hide');
-    document.getElementById("sidebar").style.height = document.body.scrollHeight + "px";
+    window.setTimeout(() => {
+      $('#display').dimmer('hide');
+      document.getElementById("sidebar").style.height = document.body.scrollHeight + "px";
+    }, 500);
   });
   ipcRenderer.send("query", {targetTeam: metadata.targetTeam});
 }
@@ -644,6 +647,78 @@ var charts = (docs) => {
       }
     }
   });
+  var ctx = document.getElementById('cvhot').getContext('2d');
+  chartData.cvhot = {
+      datasets: [
+        {
+            label: "Hab Line",
+            data: arrsDate(docs, "scoring", ["L"]),
+            borderColor: "#ff6600",
+            fill: false
+        },
+        {
+            label: "Cargo Ship",
+            data: arrsDate(docs, "scoring", ["C_CS", "H_CS"]),
+            borderColor: "#ff0000",
+            fill: false
+        },
+        {
+            label: "Rocket Level 1",
+            data: arrsDate(docs, "scoring", ["C_R1", "H_R1"]),
+            borderColor: "#00ff00",
+            fill: false
+        },
+        {
+            label: "Rocket Level 2",
+            data: arrsDate(docs, "scoring", ["C_R2", "H_R2"]),
+            borderColor: "#00ffff",
+            fill: false
+        },
+        {
+            label: "Rocket Level 3",
+            data: arrsDate(docs, "scoring", ["C_R3", "H_R3"]),
+            borderColor: "#0000ff",
+            fill: false
+        },
+        {
+            label: "Climb",
+            data: arrsDate(docs, "scoring", ["C"]),
+            borderColor: "#9966ff",
+            fill: false
+        },
+        {
+            label: "Total",
+            data: arrsDate(docs, "scoring", ["L", "C_CS", "C_R1", "C_R2", "C_R3", "H_CS", "H_R1", "H_R2", "H_R3", "C"]),
+            borderColor: "#000000",
+            fill: false
+        }
+      ]
+  };
+  var chart = new Chart(ctx, {
+    type: "line",
+    data: chartData.cvhot,
+    options: {
+      scales: {
+          xAxes: [{
+              type: 'time',
+              distribution: 'series',
+              time: {
+                  unit: 'week'
+              },
+              ticks: {
+                  minRotation: 70,
+                  maxRotation: 90
+              }
+          }]
+      }
+    }
+  });
+}
+
+var go = () => {
+  $('#display').dimmer('show');
+  ipcRenderer.sendSync("set-metadata", {targetTeam: Number.parseInt(document.getElementById("navSearch").value)});
+  ipcRenderer.sendSync("open-url","render/team.html");
 }
 
 $(document).ready(() => {sync();});

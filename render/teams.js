@@ -43,7 +43,6 @@ var sync = () => {
       argList.push(obj.availableTeams[i].team);
     }
     argList.sort((a,b) => {return a - b});
-    console.log(argList)
     ipcRenderer.send("query-team", {team_number: {$in: argList}});
   });
   ipcRenderer.send("query-stats");
