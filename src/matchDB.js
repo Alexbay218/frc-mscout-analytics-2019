@@ -1,5 +1,5 @@
 class matchDB {
-  constructor() {
+  constructor(callback = () => {}) {
     var Datastore = require('nedb');
     var matchLoaderLite = require('./matchLoadLite.js');
     var matchLoader = require('./matchLoad.js');
@@ -19,8 +19,8 @@ class matchDB {
     this.dbml.loadDatabase(() => {
       console.log("Loading DBM");
       this.dbm.loadDatabase(() => {
-        this.process({});
         this.triggers();
+        callback();
       });
     });
   }
@@ -38,26 +38,47 @@ class matchDB {
       }
     });
   }
-  process(arg) {
+  process(arg, callback = () => {}, event = null) {
     this.dbml.find(arg, (err, docs) => {
-      for(var i = 0;i < docs.length;i++) {
-        console.log("Processing Matches " + (i+1) + "/" + docs.length);
-        var res = this.ml.loadMatch(docs[i]);
-        console.log("Updating DBM");
-        this.dbm.update({hash: res.hash}, res, {upsert: true});
+      var index = 0;
+      var run = () => {
+        if(index < docs.length) {
+          console.log("Processing Matches " + (index+1) + "/" + docs.length);
+          var res = this.ml.loadMatch(docs[index]);
+          this.dbm.update({hash: res.hash}, res, {upsert: true}, () => {
+            if(event != null) {
+              event.sender.send("process-match-track", {position: index, total: docs.length});
+            }
+            index++;
+            run();
+          });
+        }
+        else {
+          callback();
+        }
       }
+      run();
     });
   }
-  processWithTBA(arg) {
+  processWithTBA(arg, callback = () => {}) {
     this.dbml.find(arg, (err, docs) => {
-      for(var i = 0;i < docs.length;i++) {
-        console.log("Processing Matches " + (i+1) + "/" + docs.length);
-        var obj = this.ml.loadMatch(docs[i]);
-        this.mtba.connectTBA(obj, (success, res) => {
-          console.log("Updating DBM");
-          this.dbm.update({hash: res.hash}, res, {upsert: true});
-        });
+      var index = 0;
+      var run = () => {
+        if(index < docs.length) {
+          console.log("Processing Matches " + (index+1) + "/" + docs.length);
+          var obj = this.ml.loadMatch(docs[index]);
+          this.mtba.connectTBA(obj, (success, res) => {
+            this.dbm.update({hash: res.hash}, res, {upsert: true}, () => {
+              index++;
+              run();
+            });
+          });
+        }
+        else {
+          callback();
+        }
       }
+      run();
     });
   }
   statLoad(callback) {
@@ -155,6 +176,20 @@ class matchDB {
         event.sender.send("query-stats-reply", this.stats);
         event.returnValue = this.stats;
         console.log("Query Stat Data Event returned to client");
+      });
+    });
+    this.ipcMain.on("process-match", (event, arg) => {
+      console.log("Process Match Event");
+      this.process(arg, () => {
+        event.sender.send("process-match-reply", {});
+        event.returnValue = {};
+      }, event);
+    });
+    this.ipcMain.on("process-match-tba", (event, arg) => {
+      console.log("Process Match TBA Event");
+      this.processWithTBA(arg, () => {
+        event.sender.send("process-match-tba-reply", {});
+        event.returnValue = {};
       });
     });
   }

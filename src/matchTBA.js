@@ -12,6 +12,9 @@ class matchTBA {
     var res = {};
     var xhttp = new this.XMLHttpRequest();
     var matchObj = Object.assign({}, matchObjIn);
+    if(matchObj.tbaData == undefined) {
+      matchObj.tbaData = null;
+    }
     if(matchObj.matchType == "T" || matchObj.matchType == "PF" || matchObj.matchType == "PM") {
       callback(false, matchObj);
     }

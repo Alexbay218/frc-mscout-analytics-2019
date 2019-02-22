@@ -36,11 +36,12 @@ class matchLoader {
       fieldCrossings: this.getCrossFieldData()
     };
     res.matchData.scoreData = this.getScoreIntervals();
+    res.tbaData = null;
     return res;
   }
   getLineData() {
     var res = {level: 0, timeStamp: 0};
-    for(var i = 0;this.data[i].value < 17.5;i++) {
+    for(var i = 0;i < this.data.length && this.data[i].value < 17.5;i++) {
       if(this.data[i].key == "a" && res.level <= 1) {
         res.level = 2;
         res.timeStamp = this.data[i].value;

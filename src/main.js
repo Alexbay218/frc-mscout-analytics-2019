@@ -17,9 +17,6 @@ app.on('ready', () => {
   }]);
   Menu.setApplicationMenu(menu);
 
-  console.log("Loading Webpage: render/dashboard.html");
-  win.loadFile('render/dashboard.html');
-
   ipcMain.on("open-file", (event, arg) => {
     dialog.showOpenDialog(win, {properties: ["openDirectory"]}, (filePaths) => {
       if(filePaths != undefined) {
@@ -66,9 +63,13 @@ app.on('ready', () => {
     event.returnValue = metadata;
   });
 
-  mdb = new matchDB();
+  mdb = new matchDB(() => {
+    console.log("Loading Webpage: render/splash.html");
+    win.loadFile('render/splash.html');    
+  });
 
   fl = new fileLoader();
 
   cf = new consoleFiles();
+
 });

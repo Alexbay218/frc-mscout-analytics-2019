@@ -1,5 +1,12 @@
 var currFilename = "";
 var valList = [];
+var editor = CodeMirror.fromTextArea(document.getElementById("mainCode"), {
+  lineNumbers: true,
+  mode: "javascript"
+});
+editor.setOption("extraKeys", {
+  "Ctrl-S": () => {saveFilePrompt();}
+});
 
 var getTeams = (arg) => {
   return ipcRenderer.sendSync("query-team", arg);
@@ -16,7 +23,7 @@ var getMatches = (arg) => {
 var loadFile = () => {
   if($("#fileList").dropdown("get value") != "") {
     currFilename = $("#fileList").dropdown("get value");
-    document.getElementById("mainCode").value = ipcRenderer.sendSync("query-console-file", {filename: currFilename})[0].content;
+    editor.setValue(ipcRenderer.sendSync("query-console-file", {filename: currFilename})[0].content);
     document.getElementById("codeEditorHeader").innerText = "Code Editor (" + currFilename + ")";
   }
 };
@@ -25,7 +32,7 @@ var removePrompt = () => {
   if(currFilename != "") {
     ipcRenderer.sendSync("remove-console-file", {filename: currFilename});
     currFilename = "";
-    document.getElementById("mainCode").value = "";
+    editor.setValue("");
     document.getElementById("codeEditorHeader").innerText = "Code Editor";
     syncValList();
   }
@@ -57,7 +64,7 @@ var saveOp = (inFilename) => {
     if(valList[i] == inFilename) {isInValList = true;}
   }
   if(!isInValList) {
-    ipcRenderer.sendSync("update-console-file", {filename: inFilename, content: document.getElementById("mainCode").value});
+    ipcRenderer.sendSync("update-console-file", {filename: inFilename, content: editor.getValue()});
     currFilename = inFilename;
     document.getElementById("codeEditorHeader").innerText = "Code Editor (" + currFilename + ")";
   }
@@ -67,7 +74,7 @@ var saveOp = (inFilename) => {
 var runCode = () => {
   $('#display').dimmer('show');
   window.setTimeout(() => {
-    var F = new Function(document.getElementById("mainCode").value);
+    var F = new Function(editor.getValue());
     F();
     $('#display').dimmer('hide');
     document.getElementById("sidebar").style.height = document.body.scrollHeight + "px";

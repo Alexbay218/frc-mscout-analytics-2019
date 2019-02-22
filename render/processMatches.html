@@ -39,17 +39,6 @@
               <div id="credDisp" class="ui large label"></div>
             </div>
           </div>
-          <div class="sixteen wide column">
-            <div class="ui segment">
-              <h1 class="ui dividing header">Load Team Data from TBA</h1>
-              <div class="ui fluid animated blue button" onclick="syncTeam()">
-                <div class="visible content">Sync with TBA</div>
-                <div class="hidden content">
-                  <i class="cloud download icon"></i>
-                </div>
-              </div>
-            </div>
-          </div>
           <div class="eight wide column">
             <div class="ui segment">
               <h1 class="ui dividing header">Remove All Match Data</h1>
@@ -72,7 +61,30 @@
               </div>
             </div>
           </div>
-          <div class="ui basic modal" id="matchModal">
+          <div class="sixteen wide column">
+            <div class="ui segment">
+              <h1 class="ui dividing header">Load Team Data from TBA</h1>
+              <div class="ui fluid animated blue button" onclick="syncTeam()">
+                <div class="visible content">Sync with TBA</div>
+                <div class="hidden content">
+                  <i class="cloud download icon"></i>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="sixteen wide column">
+            <div class="ui segment">
+              <h1 class="ui dividing header">Connect Match Data with TBA</h1>
+              <div class="ui fluid animated blue button" onclick="syncMatch()">
+                <div class="visible content">Sync with TBA</div>
+                <div class="hidden content">
+                  <i class="cloud download icon"></i>
+                </div>
+              </div>
+              <div class="ui divider"></div>
+            </div>
+          </div>
+          <div class="ui modal" id="matchModal">
             <div class="ui icon header">
               <i class="trash alternate icon"></i>
               Delete All Matches
@@ -81,17 +93,17 @@
               <p>Do you really want to delete all matches?</p>
             </div>
             <div class="actions">
-              <div class="ui red basic cancel inverted button">
+              <div class="ui red cancel button">
                 <i class="remove icon"></i>
                 No
               </div>
-              <div class="ui green inverted ok button" onclick="deleteFiles()">
+              <div class="ui green ok button" onclick="deleteFiles()">
                 <i class="checkmark icon"></i>
                 Yes
               </div>
             </div>
           </div>
-          <div class="ui basic modal" id="teamModal">
+          <div class="ui modal" id="teamModal">
             <div class="ui icon header">
               <i class="trash alternate icon"></i>
               Delete All Teams
@@ -100,11 +112,11 @@
               <p>Do you really want to delete all team data?</p>
             </div>
             <div class="actions">
-              <div class="ui red basic cancel inverted button">
+              <div class="ui red cancel button">
                 <i class="remove icon"></i>
                 No
               </div>
-              <div class="ui green inverted ok button" onclick="deleteTeam()">
+              <div class="ui green ok button" onclick="deleteTeam()">
                 <i class="checkmark icon"></i>
                 Yes
               </div>
@@ -118,5 +130,6 @@
     </div>
     <script src="route.js"></script>
     <script src="processMatches.js"></script>
+    <script src="processMatchesSyncTBA.js"></script>
   </body>
 </html>

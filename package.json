@@ -21,7 +21,6 @@
     "chart.js": "^2.7.3",
     "country-list": "^2.1.0",
     "deep-equal": "^1.0.1",
-    "electron": "^4.0.1",
     "jquery": "^3.3.1",
     "md5": "^2.2.1",
     "nedb": "^1.8.0",
@@ -29,5 +28,8 @@
     "recursive-readdir": "^2.2.2",
     "tabulator-tables": "^4.1.5",
     "xhr2": "^0.1.4"
+  },
+  "devDependencies": {
+    "electron": "^4.0.1"
   }
 }
