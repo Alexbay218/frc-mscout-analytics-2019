@@ -8,7 +8,8 @@ var router = {
   dashboard: () => {ipcRenderer.sendSync("open-url","render/dashboard.html");},
   processMatches: () => {ipcRenderer.sendSync("open-url","render/processMatches.html");},
   teams: () => {ipcRenderer.sendSync("open-url","render/teams.html");},
-  export: () => {ipcRenderer.sendSync("open-url","render/export.html");}
+  export: () => {ipcRenderer.sendSync("open-url","render/export.html");},
+  console: () => {ipcRenderer.sendSync("open-url","render/console.html");}
 };
 
 var sidebarElement = document.getElementById("sidebar");
@@ -18,4 +19,4 @@ sidebarElement.insertAdjacentHTML("beforeend","<a href=\"#\" onclick=\"router.te
 sidebarElement.insertAdjacentHTML("beforeend","<a href=\"#\" onclick=\"router.dashboard()\" class=\"active grey item\"><i class=\"flag checkered icon\"></i>Matches</a>");
 sidebarElement.insertAdjacentHTML("beforeend","<a href=\"#\" onclick=\"router.dashboard()\" class=\"active grey item\"><i class=\"th list icon\"></i>Rankings</a>");
 sidebarElement.insertAdjacentHTML("beforeend","<a href=\"#\" onclick=\"router.export()\" class=\"item\"><i class=\"table icon\"></i>Export CSV</a>");
-sidebarElement.insertAdjacentHTML("beforeend","<a href=\"#\" onclick=\"router.dashboard()\" class=\"active grey item\"><i class=\"terminal icon\"></i>Console</a>");
+sidebarElement.insertAdjacentHTML("beforeend","<a href=\"#\" onclick=\"router.console()\" class=\"item\"><i class=\"terminal icon\"></i>Console</a>");

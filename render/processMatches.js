@@ -26,7 +26,10 @@ var syncTeam = () => {
   document.getElementById("loaderText").innerText = "";
   $('#display').dimmer('show');
   ipcRenderer.on("query-team-sync-reply", () => {
-    $('#display').dimmer('hide');
+    window.setTimeout(() => {
+      $('#display').dimmer('hide');
+      document.getElementById("sidebar").style.height = document.body.scrollHeight + "px";
+    }, 500);
   });
   ipcRenderer.send("query-team-sync", true);
 }

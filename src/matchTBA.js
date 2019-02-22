@@ -5,8 +5,8 @@ class matchTBA {
     this.apiKey = "M7LzOvSZEzksZGkYcMjoFfKT8lpl6dDeHPUsvdkmXdQrNpbjaqto8cG1rSfirXLX";
     this.year = "2019";
     this.XMLHttpRequest = require("xhr2");
-    this.tbaDBLm = new Datastore({filename: require('electron').app.getAppPath() + "\\tbadb_lm", autoload: true});
-    this.tbaDBTeam = new Datastore({filename: require('electron').app.getAppPath() + "\\tbadb_team", autoload: true});
+    this.tbaDBLm = new Datastore({filename: require('electron').app.getAppPath() + "\\tbadb_lm.db", autoload: true});
+    this.tbaDBTeam = new Datastore({filename: require('electron').app.getAppPath() + "\\tbadb_team.db", autoload: true});
   }
   connectTBA(matchObjIn, callback) {
     var res = {};

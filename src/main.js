@@ -1,9 +1,11 @@
 const { app, BrowserWindow, dialog, Menu, ipcMain } = require('electron');
 const fileLoader = require('./fileLoad.js');
 const matchDB = require('./matchDB.js');
+const consoleFiles = require('./consoleFiles.js');
 var metadata = {};
 var mdb = {};
 var fl = {};
+var cf = {};
 
 app.on('ready', () => {
   console.log("Creating Browser Window");
@@ -67,4 +69,6 @@ app.on('ready', () => {
   mdb = new matchDB();
 
   fl = new fileLoader();
+
+  cf = new consoleFiles();
 });

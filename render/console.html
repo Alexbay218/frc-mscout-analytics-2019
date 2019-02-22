@@ -1,0 +1,85 @@
+<html>
+  <head>
+    <title>FRC Mscout Analytics 2019</title>
+    <link rel="shortcut icon" href="../assets/first.ico" type="image/x-icon"/>
+    <link rel="stylesheet" type="text/css" href="../semantic/dist/semantic.min.css">
+    <link rel="stylesheet" type="text/css" href="../calendar-heatmap/dist/calendar-heatmap.min.css">
+    <link rel="stylesheet" type="text/css" href="../tabulator-master/dist/css/semantic-ui/tabulator_semantic-ui.min.css">
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
+    <script src="../d3/d3.min.js"></script>
+    <script src="../moment/moment.min.js"></script>
+    <script src="../jquery/jquery-3.3.1.min.js"></script>
+    <script src="../semantic/dist/semantic.min.js"></script>
+    <script src="../calendar-heatmap/dist/calendar-heatmap.min.js"></script>
+    <script>if (window.module) module = window.module</script>
+    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />
+  </head>
+  <body style="overflow: auto;">
+    <div class="ui two column grid" style="height:100%;margin:0px;">
+      <div class="ui two wide column inverted vertical labeled icon menu equal height grid" style="height:110%;margin-top:-3px;margin-bottom: 0px;" id="sidebar"></div>
+      <div class="ui fourteen wide column" id="display" style="visibility: hidden;">
+        <div class="ui grid">
+          <div class="sixteen wide column">
+            <div class="ui segment">
+              <h1 class="ui dividing header">Content</h1>
+              <canvas id="mainCanvas" style="height:0%;"></canvas>
+              <div id="mainDiv"></div>
+            </div>
+          </div>
+          <div class="sixteen wide column">
+            <div class="ui attached segment">
+              <h1 class="ui dividing header" id="codeEditorHeader">Code Editor</h1>
+              <div class="ui form">
+                <div class="field"><textarea id="mainCode" style="font-family: monospace;"></textarea></div>
+              </div>
+              <div class="ui divider"></div>
+              <div class="ui search selection dropdown" id="fileList">
+                <div class="text"></div>
+                <i class="dropdown icon"></i>
+              </div>
+              <div class="ui buttons">
+                <div class="ui button" onclick="loadFile();">Load</div>
+                <div class="ui red button" onclick="removePrompt();"><i class="trash alternate icon"></i></div>
+              </div>
+              <div class="ui grey button" onclick="saveAsFilePrompt();">Save As</div>
+              <div class="ui blue button" onclick="saveFilePrompt();">Save</div>
+              <div class="ui green button" onclick="runCode();">Run Code</div>
+            </div>
+            <div class="ui four bottom attached buttons">
+                <div class="ui red button" onclick="require('electron').shell.openExternal('https://www.chartjs.org/docs/latest/');">Chart.js</div>
+                <div class="ui yellow button" onclick="require('electron').shell.openExternal('https://plot.ly/javascript/');">Plotly.js</div>
+                <div class="ui green button" onclick="require('electron').shell.openExternal('http://tabulator.info/docs/4.1/columns');">Tabulator</div>
+                <div class="ui black button" onclick="require('electron').shell.openExternal('https://github.com/louischatriot/nedb#inserting-documents');">NeDB</div>
+            </div>
+          </div>
+          <div class="sixteen wide column">
+            <div class="ui segment">
+              <h1 class="ui dividing header">Log</h1>
+              <div class="ui red button" onclick="clearLog();">Clear Log</div>
+              <div class="ui divided list" style="overflow:auto;" id="mainLog"></div>
+            </div>
+          </div>
+          <div class="ui modal" id="saveAsModal">
+            <div class="header">Save As</div>
+            <div class="content">
+              <div class="ui input">
+                <input type="text" placeholder="Filename" id="saveAsText">
+              </div>
+            </div>
+            <div class="actions">
+              <div class="ui cancel button">Cancel</div>
+              <div class="ui blue approve button">Save</div>
+            </div>
+          </div>
+        </div>
+        <div class="ui dimmer">
+          <div class="ui text loader" id="loaderText"></div>
+        </div>
+      </div>
+    </div>
+    <script src="route.js"></script>
+    <script src="process.js"></script>
+    <script src="console.js"></script>
+  </body>
+</html>

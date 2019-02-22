@@ -4,7 +4,7 @@ class matchDB {
     var matchLoaderLite = require('./matchLoadLite.js');
     var matchLoader = require('./matchLoad.js');
     var matchTBA = require('./matchTBA.js');
-    this.dbml = new Datastore({filename: require('electron').app.getAppPath() + "\\matchdb"});
+    this.dbml = new Datastore({filename: require('electron').app.getAppPath() + "\\matchdb.db"});
     this.dbm = new Datastore();
     this.mtba = new matchTBA();
     this.mll = new matchLoaderLite();

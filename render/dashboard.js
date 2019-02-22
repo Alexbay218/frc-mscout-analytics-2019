@@ -128,6 +128,9 @@ var sync = () => {
           }
         });
         $('#TeamStatBox').dimmer('hide');
+        window.setTimeout(() => {
+          document.getElementById("sidebar").style.height = document.body.scrollHeight + "px";
+        }, 500);
       });
       ipcRenderer.send("query-team", {team_number: { $in: queryArr }});
     }, 3000);

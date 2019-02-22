@@ -44,7 +44,10 @@ var calculate = () => {
       pagination: "local",
       paginationSize: 13
     });
-    $('#display').dimmer('hide');
+    window.setTimeout(() => {
+      $('#display').dimmer('hide');
+      document.getElementById("sidebar").style.height = document.body.scrollHeight + "px";
+    }, 500);
   });
   ipcRenderer.send("query", filter);
 }
