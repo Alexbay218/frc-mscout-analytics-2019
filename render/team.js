@@ -8,7 +8,7 @@ var sync = () => {
   document.getElementById("navSearch").value = metadata.targetTeam;
   if(metadata.targetTeam != undefined) {
     ipcRenderer.sendSync("set-metadata", {});
-    ipcRenderer.on("query-team-reply", (event, docs) => {
+    ipcRenderer.once("query-team-reply", (event, docs) => {
       var team = docs[0];
       if(team != undefined && team != null) {
         document.getElementById("teamTitle").innerHTML = "Team " + team.team_number + " (" + team.nickname + ")  " + "<i id=\"countryFlag\"></i>";
@@ -52,7 +52,7 @@ var sync = () => {
 }
 
 var teamData = (team) => {
-  ipcRenderer.on("query-reply", (e, docs) =>{
+  ipcRenderer.once("query-reply", (e, docs) =>{
     var tableData = docs;
     var comments = [];
     var sumAccuracy = 0;
@@ -117,7 +117,6 @@ var teamData = (team) => {
     charts(tableData);
     window.setTimeout(() => {
       $('#display').dimmer('hide');
-      document.getElementById("sidebar").style.height = document.body.scrollHeight + "px";
     }, 500);
   });
   ipcRenderer.send("query", {targetTeam: metadata.targetTeam});

@@ -83,7 +83,7 @@ class matchDB {
   }
   statLoad(callback) {
     console.log("Calculating Match Statistics");
-    this.dbm.find({}, (err, docs) => {
+    this.dbml.find({}, (err, docs) => {
       this.stats.totalMatches = docs.length;
       this.stats.tbaMatches = 0;
       this.stats.teamOnlyTBAMatches = 0;
@@ -91,7 +91,7 @@ class matchDB {
       this.stats.dateData = [];
       for(var i = 0;i < docs.length;i++) {
         //availableTeams
-        if(docs[i].tbaData != undefined) {this.stats.tbaMatches++;}
+        if(docs[i].tbaData != undefined && docs[i].tbaData != null) {this.stats.tbaMatches++;}
         var found = false;
         for(var j = 0;j < this.stats.availableTeams.length;j++) {
           if(docs[i].targetTeam == this.stats.availableTeams[j].team) {
@@ -113,6 +113,15 @@ class matchDB {
     });
   }
   triggers() {
+    this.ipcMain.on("update-lite", (event, args) => {
+      console.log("Update Lite Event");
+      this.dbml.update(args.filter, args.content, {upsert: true}, () => {
+        this.process(args.filter, () => {
+          event.sender.send("update-lite-reply", {});
+          event.returnValue = {};
+        });
+      });
+    });
     this.ipcMain.on("remove", (event, arg) => {
       console.log("Remove Data Event");
       this.dbml.find(arg, (err, docs) => {

@@ -1,8 +1,9 @@
 <html>
   <head>
-    <title>FRC Mscout Analytics 2019</title>
+    <title>FRC MScout Analytics 2019</title>
     <link rel="shortcut icon" href="../assets/first.ico" type="image/x-icon"/>
     <link rel="stylesheet" type="text/css" href="../semantic/dist/semantic.min.css">
+    <link rel="stylesheet" type="text/css" href="../semantic-calendar/dist/calendar.min.css">
     <link rel="stylesheet" type="text/css" href="../calendar-heatmap/dist/calendar-heatmap.min.css">
     <link rel="stylesheet" type="text/css" href="../tabulator-master/dist/css/semantic-ui/tabulator_semantic-ui.min.css">
     <link rel="stylesheet" href="../codemirror/lib/codemirror.css">
@@ -12,20 +13,22 @@
     <script src="../moment/moment.min.js"></script>
     <script src="../jquery/jquery-3.3.1.min.js"></script>
     <script src="../semantic/dist/semantic.min.js"></script>
+    <script src="../semantic-calendar/dist/calendar.min.js"></script>
     <script src="../calendar-heatmap/dist/calendar-heatmap.min.js"></script>
     <script src="../codemirror/lib/codemirror.js"></script>
     <script src="../codemirror/mode/javascript/javascript.js"></script>
     <script>if (window.module) module = window.module</script>
     <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />
   </head>
-  <body style="overflow: auto;">
+  <body style="overflow: hidden">
     <div class="ui two column grid" style="height:100%;margin:0px;">
       <div class="ui two wide column inverted vertical labeled icon menu equal height grid" style="height:110%;margin-top:-3px;margin-bottom: 0px;" id="sidebar"></div>
-      <div class="ui fourteen wide column" id="display" style="visibility: hidden;">
+      <div class="ui fourteen wide column" id="display" style="visibility: hidden;overflow: auto;">
         <div class="ui grid">
           <div class="sixteen wide column">
             <div class="ui segment">
               <h1 class="ui dividing header">Content</h1>
+              <div id="mainFilter"></div>
               <canvas id="mainCanvas" style="height:0%;"></canvas>
               <div id="mainDiv"></div>
             </div>

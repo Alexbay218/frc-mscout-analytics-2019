@@ -19,6 +19,10 @@ class matchLoaderLite {
       return null;
     }
     var newStr = str.slice();
+    if(newStr.indexOf("\"") != -1) {
+      var commentTmp = newStr.substring(newStr.indexOf("\"")+1,newStr.lastIndexOf("\""));
+      newStr = newStr.substring(0,newStr.indexOf("\""));
+    }
     var metadata = newStr.substr(0,newStr.indexOf(":"));
     var sourceTeamTmp = metadata.substr(0,metadata.indexOf(";"));
     metadata = metadata.substr(metadata.indexOf(";")+1);
@@ -34,7 +38,9 @@ class matchLoaderLite {
     newStr = newStr.substr(newStr.indexOf(":") + 1);
     var dataTmp = newStr.substr(0,newStr.lastIndexOf(";")+1);
     newStr = newStr.substr(newStr.lastIndexOf(";") + 1);
-    var commentTmp = newStr;
+    if(str.indexOf("\"") == -1) {
+      var commentTmp = newStr;
+    }
     return {
       raw: str,
       hash: this.md5(str),
@@ -45,7 +51,8 @@ class matchLoaderLite {
       matchNumber: Number.parseInt(matchNumberTmp),
       variableData: this.commaSemiColonSplit(vardataTmp),
       matchData: this.commaSemiColonSplit(dataTmp),
-      comments: commentTmp
+      comments: commentTmp,
+      tbaData: null
     }
   }
 }

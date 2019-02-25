@@ -21,12 +21,15 @@ class matchTBA {
     else {
       xhttp.onreadystatechange = () => {
         if(xhttp.readyState == 4 && (xhttp.status == 200 || xhttp.status == 304)) {
-          var obj = xhttp.status == 304 ? [matchObj.eventData] : JSON.parse(xhttp.responseText);
+          var obj = xhttp.status == 304 ? [matchObj.tbaData.eventData] : JSON.parse(xhttp.responseText);
+          console.log(obj);
           var tar = null;
           for(var i = 0;i < obj.length;i++) {
             var startDate = new Date(obj[i].start_date);
+            startDate.setDate(startDate.getDate() - 2);
             var tarDate = new Date(matchObj.timeStamp);
             var endDate = new Date(obj[i].end_date);
+            endDate.setDate(endDate.getDate() + 2);
             if(startDate <= tarDate && tarDate <= endDate) {
               tar = obj[i];
             }
@@ -41,17 +44,47 @@ class matchTBA {
             xhttp2.onreadystatechange = () => {
               if(xhttp2.readyState == 4 && xhttp2.status == 200) {
                 var obj2 = JSON.parse(xhttp2.responseText);
-                var equal = require('deep-equal');
-                res.eventData = Object.assign({}, tar);
-                res.matchData = Object.assign({}, obj2);
-                res.lastModified = {event: xhttp.getResponseHeader("Last-Modified"), match: xhttp2.getResponseHeader("Last-Modified")};
-                if(matchObj.tbaData != undefined) {
-                  if(!equal(matchObj.tbaData, res)) {
-                    matchObj.tbaData = Object.assign({}, res);
+                var contained = null;
+                for(var i = 0;i < obj2.length;i++) {
+                  if(obj2[i].comp_level == compLvl) {
+                    console.log(obj2[i])
+                    if(obj2[i].match_number == matchObj.matchNumber) {
+                      for(var j = 0;j < obj2[i].alliances.blue.team_keys.length;j++) {
+                        if(obj2[i].alliances.blue.team_keys[j] == "frc" + matchObj.targetTeam) {
+                          contained = obj2[i];
+                        }
+                      }
+                      for(var j = 0;j < obj2[i].alliances.blue.surrogate_team_keys.length;j++) {
+                        if(obj2[i].alliances.blue.surrogate_team_keys[j] == "frc" + matchObj.targetTeam) {
+                          contained = obj2[i];
+                        }
+                      }
+                      for(var j = 0;j < obj2[i].alliances.red.team_keys.length;j++) {
+                        if(obj2[i].alliances.red.team_keys[j] == "frc" + matchObj.targetTeam) {
+                          contained = obj2[i];
+                        }
+                      }
+                      for(var j = 0;j < obj2[i].alliances.red.surrogate_team_keys.length;j++) {
+                        if(obj2[i].alliances.red.surrogate_team_keys[j] == "frc" + matchObj.targetTeam) {
+                          contained = obj2[i];
+                        }
+                      }
+                    }
                   }
                 }
-                else {
-                  matchObj.tbaData = Object.assign({}, res);
+                var equal = require('deep-equal');
+                if(contained != null) {
+                  res.eventData = Object.assign({}, tar);
+                  res.matchData = Object.assign({}, contained);
+                  res.lastModified = {event: xhttp.getResponseHeader("Last-Modified"), match: xhttp2.getResponseHeader("Last-Modified")};
+                  if(matchObj.tbaData != undefined) {
+                    if(!equal(matchObj.tbaData, contained)) {
+                      matchObj.tbaData = Object.assign({}, res);
+                    }
+                  }
+                  else {
+                    matchObj.tbaData = Object.assign({}, res);
+                  }
                 }
                 callback(true, matchObj);
               }
@@ -62,7 +95,7 @@ class matchTBA {
                 callback(false, matchObj);
               }
             };
-            xhttp2.open("GET", "https://www.thebluealliance.com/api/v3/match/" + tar.key + "_" + compLvl + matchObj.matchNumber, true);
+            xhttp2.open("GET", "https://www.thebluealliance.com/api/v3/event/" + tar.key + "/matches", true);
             xhttp2.setRequestHeader("X-TBA-Auth-Key", this.apiKey);
             if(matchObj.tbaData != undefined && matchObj.tbaData.lastModified.match != undefined) {
               xhttp2.setRequestHeader("If-Modified-Since", matchObj.tbaData.lastModified.match);

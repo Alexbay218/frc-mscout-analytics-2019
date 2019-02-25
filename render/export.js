@@ -7,7 +7,7 @@ var calculate = () => {
   if($("#teamFilter").dropdown("get value") != "") {
     filter.targetTeam = {$in: $("#teamFilter").dropdown("get value").split(",").map((x) => {return Number.parseInt(x);})};
   }
-  ipcRenderer.on("query-reply", (event, docs) => {
+  ipcRenderer.once("query-reply", (event, docs) => {
     var tableData = docs;
     for(var i = 0;i < tableData.length;i++) {
       tableData[i] = process(tableData[i]);
@@ -44,10 +44,6 @@ var calculate = () => {
       pagination: "local",
       paginationSize: 13
     });
-    window.setTimeout(() => {
-      $('#display').dimmer('hide');
-      document.getElementById("sidebar").style.height = document.body.scrollHeight + "px";
-    }, 500);
   });
   ipcRenderer.send("query", filter);
 }
@@ -70,7 +66,7 @@ var sync = () => {
   $("#display").transition("fade in", "500ms");
   $('#display').dimmer({closable:false});
   $('#display').dimmer('show');
-  ipcRenderer.on("query-stats-reply", (event, message) => {
+  ipcRenderer.once("query-stats-reply", (event, message) => {
     stats = message;
     var teamFilterList = [];
     for(var i = 0;i < stats.availableTeams.length;i++) {

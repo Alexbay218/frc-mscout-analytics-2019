@@ -12,29 +12,28 @@ var openFiles = () => {
   document.getElementById("loaderText").innerText = "";
   $('#display').dimmer('show');
   var cred = ($(".rating").rating("get rating")-1)/4;
-  ipcRenderer.on("open-file-reply", () => {
+  ipcRenderer.once("open-file-reply", () => {
     $('#display').dimmer('hide');
   });
   ipcRenderer.send("open-file", cred);
 }
 
-ipcRenderer.on("open-file-track", (event, message) => {
+ipcRenderer.once("open-file-track", (event, message) => {
   document.getElementById("loaderText").innerText = "Processing  " + (message.position + 1) + "/" + message.total + " files";
 });
 
 var syncTeam = () => {
   document.getElementById("loaderText").innerText = "";
   $('#display').dimmer('show');
-  ipcRenderer.on("query-team-sync-reply", () => {
+  ipcRenderer.once("query-team-sync-reply", () => {
     window.setTimeout(() => {
       $('#display').dimmer('hide');
-      document.getElementById("sidebar").style.height = document.body.scrollHeight + "px";
     }, 500);
   });
   ipcRenderer.send("query-team-sync", true);
 }
 
-ipcRenderer.on("query-team-sync-track", (event, message) => {
+ipcRenderer.once("query-team-sync-track", (event, message) => {
   if(message.position >= 0) {
     document.getElementById("loaderText").innerText = "Syncing  " + (message.position + 1) + " teams\n[Teams from " + message.page * 500 + " to " + (message.page+1)*500 + "]";
   }

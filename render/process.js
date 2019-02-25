@@ -49,6 +49,9 @@ var process = (input) => {
     doc.times.C = doc.matchData.climbData.interval;
     doc.counts.C = doc.matchData.climbData.level;
     doc.scoring.C = doc.matchData.climbData.level * 3;
+    if(doc.matchData.climbData.level == 3) {
+      doc.scoring.C += 3;
+    }
 
     for(var i = 0;i < doc.matchData.scoreData.length;i++) {
       var INF = doc.matchData.scoreData[i].intervalNoFail;

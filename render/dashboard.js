@@ -4,7 +4,7 @@ var sync = () => {
   $('#TMSBox').dimmer({closable:false}).dimmer('show');
   $('#TeamStatBox').dimmer({closable:false}).dimmer('show');
   $('#MatchCalBox').dimmer({closable:false}).dimmer('show');
-  ipcRenderer.on("query-stats-reply", (event, message) => {
+  ipcRenderer.once("query-stats-reply", (event, message) => {
     var obj = message;
     //doughnut chart
     var totalMatElem = document.getElementById("totalMatches");
@@ -89,7 +89,7 @@ var sync = () => {
       for(var i = 0;i < obj.availableTeams.length;i++) {
         queryArr.push(obj.availableTeams[i].team);
       }
-      ipcRenderer.on("query-team-reply", (event, message) => {
+      ipcRenderer.once("query-team-reply", (event, message) => {
         var currTeamData = message;
         var tableData = [];
         var listElem = document.getElementById("teamList");
@@ -128,9 +128,6 @@ var sync = () => {
           }
         });
         $('#TeamStatBox').dimmer('hide');
-        window.setTimeout(() => {
-          document.getElementById("sidebar").style.height = document.body.scrollHeight + "px";
-        }, 500);
       });
       ipcRenderer.send("query-team", {team_number: { $in: queryArr }});
     }, 3000);

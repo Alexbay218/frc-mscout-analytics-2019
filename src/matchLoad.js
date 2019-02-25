@@ -41,12 +41,12 @@ class matchLoader {
   }
   getLineData() {
     var res = {level: 0, timeStamp: 0};
-    for(var i = 0;i < this.data.length && this.data[i].value < 17.5;i++) {
-      if(this.data[i].key == "a" && res.level <= 1) {
+    for(var i = 0;i < this.data.length && this.data[i].value <= 15;i++) {
+      if(this.data[i].key == "b" && res.level <= 1) {
         res.level = 2;
         res.timeStamp = this.data[i].value;
       }
-      else if(this.data[i].key == "b" && res.level <= 0) {
+      else if(this.data[i].key == "a" && res.level <= 0) {
         res.level = 1;
         res.timeStamp = this.data[i].value;
       }

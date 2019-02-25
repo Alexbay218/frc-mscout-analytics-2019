@@ -1,8 +1,9 @@
 <html>
   <head>
-    <title>FRC Mscout Analytics 2019</title>
+    <title>FRC MScout Analytics 2019</title>
     <link rel="shortcut icon" href="../assets/first.ico" type="image/x-icon"/>
     <link rel="stylesheet" type="text/css" href="../semantic/dist/semantic.min.css">
+    <link rel="stylesheet" type="text/css" href="../semantic-calendar/dist/calendar.min.css">
     <link rel="stylesheet" type="text/css" href="../calendar-heatmap/dist/calendar-heatmap.min.css">
     <link rel="stylesheet" type="text/css" href="../tabulator-master/dist/css/semantic-ui/tabulator_semantic-ui.min.css">
     <link rel="stylesheet" type="text/css" href="style.css">
@@ -11,14 +12,15 @@
     <script src="../moment/moment.min.js"></script>
     <script src="../jquery/jquery-3.3.1.min.js"></script>
     <script src="../semantic/dist/semantic.min.js"></script>
+    <script src="../semantic-calendar/dist/calendar.min.js"></script>
     <script src="../calendar-heatmap/dist/calendar-heatmap.min.js"></script>
     <script>if (window.module) module = window.module</script>
     <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />
   </head>
-  <body style="overflow: auto;" id="display">
+  <body id="display">
     <div style="top: -99px;height: 0px;" id="sidebar"></div>
     <div class="ui active dimmer">
-      <div class="ui text loader" id="loadingText">Loading</div>
+      <div class="ui massive text loader" id="loadingText">Loading</div>
     </div>
     <script src="route.js"></script>
     <script src="splash.js"></script>

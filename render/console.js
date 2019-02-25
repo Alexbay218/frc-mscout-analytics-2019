@@ -77,7 +77,6 @@ var runCode = () => {
     var F = new Function(editor.getValue());
     F();
     $('#display').dimmer('hide');
-    document.getElementById("sidebar").style.height = document.body.scrollHeight + "px";
   }, 50);
 };
 
@@ -120,7 +119,6 @@ var sync = () => {
   syncValList();
   window.setTimeout(() => {
     $('#display').dimmer('hide');
-    document.getElementById("sidebar").style.height = document.body.scrollHeight + "px";
   }, 500);
 };
 

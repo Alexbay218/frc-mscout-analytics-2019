@@ -3,7 +3,7 @@ var sync = () => {
   $('#display').dimmer({closable:false});
   $('#display').dimmer('show');
   var stats = {};
-  ipcRenderer.on("query-team-reply", (event, docs) => {
+  ipcRenderer.once("query-team-reply", (event, docs) => {
     var tableData = docs;
     for(var i = 0;i < stats.availableTeams.length;i++) {
       var found = false;
@@ -36,7 +36,7 @@ var sync = () => {
       {column:"team_number", dir:"asc"}
     ]);
   });
-  ipcRenderer.on("query-stats-reply", (event, obj) => {
+  ipcRenderer.once("query-stats-reply", (event, obj) => {
     var argList = [];
     stats = obj;
     for(var i = 0;i < obj.availableTeams.length;i++) {
