@@ -17,12 +17,26 @@
     <script>if (window.module) module = window.module</script>
     <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />
   </head>
-  <body id="display">
-    <div style="top: -99px;height: 0px;" id="sidebar"></div>
-    <div class="ui active dimmer">
-      <div class="ui massive text loader" id="loadingText">Loading</div>
+  <body style="overflow: hidden">
+    <div class="ui two column grid" style="height:100%;margin: 0px;">
+      <div class="ui two wide column inverted vertical labeled icon menu equal height grid" style="height:110%;margin-top:-3px" id="sidebar"></div>
+      <div class="ui fourteen wide column" id="display" style="visibility: hidden;overflow: auto;">
+        <div class="ui grid">
+          <div class="sixteen wide column">
+            <div class="ui segment">
+              <h1 class="ui dividing header">Matches</h1>
+              <div class="ui form" id="matchFilter"></div>
+              <div id="matchTable"></div>
+            </div>
+          </div>
+        </div>
+        <div class="ui dimmer">
+          <div class="ui text loader" id="loaderText"></div>
+        </div>
+      </div>
     </div>
+    <script src="filter.js"></script>
     <script src="route.js"></script>
-    <script src="splash.js"></script>
+    <script src="matches.js"></script>
   </body>
 </html>

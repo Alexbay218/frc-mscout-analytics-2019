@@ -31,12 +31,11 @@
           <div class="six wide column">
             <div class="ui segment">
               <h1 class="ui dividing header">Filter</h1>
-              <div class="ui search multiple selection dropdown" id="teamFilter">
-                <div class="text"></div>
-                <i class="dropdown icon"></i>
-              </div>
-              <button class="ui button" onclick="calculate()">Preview</button>
+              <div class="ui form" id="matchFilter"></div>
+              <br>
               <button class="ui primary button" onclick="download()">Export</button>
+              <div class="ui divider"></div>
+              <button class="ui button" onclick="downloadRawJSON()">Download Raw JSON</button>
             </div>
           </div>
         </div>
@@ -45,6 +44,7 @@
         </div>
       </div>
     </div>
+    <script src="filter.js"></script>
     <script src="route.js"></script>
     <script src="process.js"></script>
     <script src="export.js"></script>

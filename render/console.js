@@ -4,6 +4,7 @@ var editor = CodeMirror.fromTextArea(document.getElementById("mainCode"), {
   lineNumbers: true,
   mode: "javascript"
 });
+
 editor.setOption("extraKeys", {
   "Ctrl-S": () => {saveFilePrompt();}
 });
@@ -117,6 +118,7 @@ var sync = () => {
       oldLog.apply(console, arguments);
   };
   syncValList();
+  filterMatches("matchFilter", "");
   window.setTimeout(() => {
     $('#display').dimmer('hide');
   }, 500);

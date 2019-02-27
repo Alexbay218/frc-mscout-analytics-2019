@@ -18,7 +18,7 @@ var openFiles = () => {
   ipcRenderer.send("open-file", cred);
 }
 
-ipcRenderer.once("open-file-track", (event, message) => {
+ipcRenderer.on("open-file-track", (event, message) => {
   document.getElementById("loaderText").innerText = "Processing  " + (message.position + 1) + "/" + message.total + " files";
 });
 

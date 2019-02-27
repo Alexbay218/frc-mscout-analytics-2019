@@ -30,7 +30,7 @@ class matchDB {
         var obj = this.mll.loadMatchLite(str);
         if(obj != null) {
           obj.credibility = cred;
-          this.dbml.update({hash: obj.hash}, obj, {upsert: true}, () => {this.process({hash: obj.hash});callback();});
+          this.dbml.update({hash: obj.hash}, obj, {upsert: true}, () => {callback();});
         }
       }
       else {
@@ -68,9 +68,12 @@ class matchDB {
           console.log("Processing Matches " + (index+1) + "/" + docs.length);
           var obj = this.ml.loadMatch(docs[index]);
           this.mtba.connectTBA(obj, (success, res) => {
-            this.dbm.update({hash: res.hash}, res, {upsert: true}, () => {
-              index++;
-              run();
+            docs[index].tbaData = res.tbaData;
+            this.dbml.update({hash: res.hash}, docs[index], {upsert: true}, () => {
+              this.dbm.update({hash: res.hash}, res, {upsert: true}, () => {
+                index++;
+                run();
+              });
             });
           });
         }
@@ -144,10 +147,12 @@ class matchDB {
     });
     this.ipcMain.on("query", (event, arg) => {
       console.log("Query Processed Data Event");
-      this.dbm.find(arg, (err, docs) => {
-        event.sender.send("query-reply", docs);
-        event.returnValue = docs;
-        console.log("Query Processed Data Event returned to client");
+      this.process(arg, () => {
+        this.dbm.find(arg, (err, docs) => {
+          event.sender.send("query-reply", docs);
+          event.returnValue = docs;
+          console.log("Query Processed Data Event returned to client");
+        });
       });
     });
     this.ipcMain.on("query-lite", (event, arg) => {

@@ -1,6 +1,5 @@
 var process = (input) => {
     var doc = Object.assign({}, input);
-    doc.date = new Date(doc.timeStamp);
     doc.times = {
       DF: 0,
       L: 0,

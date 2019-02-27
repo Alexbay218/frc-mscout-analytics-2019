@@ -1,4 +1,5 @@
 var metadata = {};
+var chart = {};
 
 var sync = () => {
   $("#display").transition("fade in", "500ms");
@@ -44,14 +45,15 @@ var sync = () => {
         document.getElementById("teamMotto").style.display = "none";
         document.getElementById("tbaUrl").style.display = "none";
       }
-      teamData(team);
+      teamData();
     });
     ipcRenderer.send("query-team", {team_number: metadata.targetTeam});
+    filterMatches("matchFilter", "resetCharts();teamData();", false);
   }
   else {router.teams()}
 }
 
-var teamData = (team) => {
+var teamData = () => {
   ipcRenderer.once("query-reply", (e, docs) =>{
     var tableData = docs;
     var comments = [];
@@ -59,6 +61,9 @@ var teamData = (team) => {
     var sumScore = 0;
     for(var i = 0;i < tableData.length;i++) {
       tableData[i] = process(tableData[i]);
+      var currDate = (new Date(tableData[i].timeStamp));
+      var str = (currDate.getMonth() + 1) + "/" + currDate.getDate() + "/" + currDate.getFullYear();
+      tableData[i].dateStr = str;
       tableData[i].score = tableData[i].scoring.L + tableData[i].scoring.C + tableData[i].scoring.C_CS + tableData[i].scoring.H_CS;
       tableData[i].score += tableData[i].scoring.C_R1 + tableData[i].scoring.H_R1;
       tableData[i].score += tableData[i].scoring.C_R2 + tableData[i].scoring.H_R2;
@@ -81,7 +86,7 @@ var teamData = (team) => {
       data: tableData,
       layout: "fitColumns",
       columns: [
-        {title: "Date", field: "date", headerFilter: true},
+        {title: "Date", field: "dateStr", headerFilter: true, sorter:"date", sorterParams:{format:"MM/DD/YYYY"}},
         {title: "Match Type", field: "matchType", headerFilter: true},
         {title: "Match Number", field: "matchNumber", headerFilter: true},
         {title: "Score", field: "score"},
@@ -99,6 +104,7 @@ var teamData = (team) => {
     document.getElementById("avgAccuracy").innerText = Number.parseFloat(((sumAccuracy/docs.length)*100).toFixed(2));
     document.getElementById("avgScore").innerText = Number.parseFloat((sumScore/docs.length).toFixed(2));
     var commentsListElem = document.getElementById("commentList");
+    commentsListElem.innerHTML = "";
     for(var i = 0;i < comments.length;i++) {
       if(comments[i].length > 0 && comments[i].length <= 500) {
         commentsListElem.insertAdjacentHTML("beforeend",
@@ -119,12 +125,14 @@ var teamData = (team) => {
       $('#display').dimmer('hide');
     }, 500);
   });
-  ipcRenderer.send("query", {targetTeam: metadata.targetTeam});
+  filterMatchesObj.targetTeam = metadata.targetTeam;
+  ipcRenderer.send("query", filterMatchesObj);
 }
 
 var charts = (docs) => {
   var ctx = document.getElementById('cvht').getContext('2d');
   var chartData = {};
+  chart = {};
   chartData.cvht = {
       labels: ["Failing at Scoring Cargo", "Scoring Cargo", "Picking up Cargo", "Failing at Scoring Hatch", "Scoring Hatch", "Picking up Hatch"],
       datasets: [{
@@ -158,7 +166,7 @@ var charts = (docs) => {
           backgroundColor:["#cc5200", "#ff6600", "#ffb380", "#cccc00", "#ffff00", "#ffff80"]
       }]
   };
-  var chart = new Chart(ctx, {
+  chart.cvht = new Chart(ctx, {
     type: "doughnut",
     data: chartData.cvht,
     options: {
@@ -214,7 +222,7 @@ var charts = (docs) => {
           backgroundColor:["#cc5200", "#ff6600", "#cccc00", "#ffff00"]
       }]
   };
-  var chart = new Chart(ctx, {
+  chart.cvha = new Chart(ctx, {
     type: "doughnut",
     data: chartData.cvha,
     options: {
@@ -262,7 +270,7 @@ var charts = (docs) => {
           backgroundColor:["#ff6600", "#ffff00"]
       }]
   };
-  var chart = new Chart(ctx, {
+  chart.cvhs = new Chart(ctx, {
     type: "doughnut",
     data: chartData.cvhs,
     options: {
@@ -324,7 +332,7 @@ var charts = (docs) => {
           ]
       }]
   };
-  var chart = new Chart(ctx, {
+  chart.csvrt = new Chart(ctx, {
     type: "doughnut",
     data: chartData.csvrt,
     options: {
@@ -382,7 +390,7 @@ var charts = (docs) => {
           ]
       }]
   };
-  var chart = new Chart(ctx, {
+  chart.csvra = new Chart(ctx, {
     type: "doughnut",
     data: chartData.csvra,
     options: {
@@ -436,7 +444,7 @@ var charts = (docs) => {
           ]
       }]
   };
-  var chart = new Chart(ctx, {
+  chart.csvrs = new Chart(ctx, {
     type: "doughnut",
     data: chartData.csvrs,
     options: {
@@ -508,7 +516,7 @@ var charts = (docs) => {
           ]
       }]
   };
-  var chart = new Chart(ctx, {
+  chart.svdt = new Chart(ctx, {
     type: "doughnut",
     data: chartData.svdt,
     options: {
@@ -562,7 +570,7 @@ var charts = (docs) => {
           ]
       }]
   };
-  var chart = new Chart(ctx, {
+  chart.svds = new Chart(ctx, {
     type: "doughnut",
     data: chartData.svds,
     options: {
@@ -627,7 +635,7 @@ var charts = (docs) => {
         }
       ]
   };
-  var chart = new Chart(ctx, {
+  chart.sot = new Chart(ctx, {
     type: "line",
     data: chartData.sot,
     options: {
@@ -693,7 +701,7 @@ var charts = (docs) => {
         }
       ]
   };
-  var chart = new Chart(ctx, {
+  chart.cvhot = new Chart(ctx, {
     type: "line",
     data: chartData.cvhot,
     options: {
@@ -712,6 +720,19 @@ var charts = (docs) => {
       }
     }
   });
+}
+
+var resetCharts = () => {
+  chart.cvht.destroy();
+  chart.cvha.destroy();
+  chart.cvhs.destroy();
+  chart.csvrt.destroy();
+  chart.csvra.destroy();
+  chart.csvrs.destroy();
+  chart.svdt.destroy();
+  chart.svds.destroy();
+  chart.sot.destroy();
+  chart.cvhot.destroy();
 }
 
 var go = () => {

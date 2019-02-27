@@ -1,22 +1,22 @@
 var stats = {};
-var filter = {};
 var table = {};
 
 var calculate = () => {
   $('#display').dimmer('show');
-  if($("#teamFilter").dropdown("get value") != "") {
-    filter.targetTeam = {$in: $("#teamFilter").dropdown("get value").split(",").map((x) => {return Number.parseInt(x);})};
-  }
   ipcRenderer.once("query-reply", (event, docs) => {
     var tableData = docs;
     for(var i = 0;i < tableData.length;i++) {
       tableData[i] = process(tableData[i]);
+      var currDate = (new Date(tableData[i].timeStamp));
+      var str = (currDate.getMonth() + 1) + "/" + currDate.getDate() + "/" + currDate.getFullYear();
+      tableData[i].dateStr = str;
     }
     $("#dataTable").empty();
     table = new Tabulator("#dataTable", {
       data: tableData,
       columns: [
-        {title: "Date", field: "date", headerFilter: true},
+        {title: "Date", field: "dateStr", headerFilter: true, sorter:"date", sorterParams:{format:"MM/DD/YYYY"}},
+        {title: "Time Stamp", field: "timeStamp", headerFilter: true},
         {title: "Team Number", field: "targetTeam", headerFilter: true},
         {title: "Match Type", field: "matchType", headerFilter: true},
         {title: "Match Number", field: "matchNumber", headerFilter: true},
@@ -42,10 +42,11 @@ var calculate = () => {
         {title: "Field Crossings", field: "counts.FC"}
       ],
       pagination: "local",
-      paginationSize: 13
+      paginationSize: 12
     });
+    $('#display').dimmer('hide');
   });
-  ipcRenderer.send("query", filter);
+  ipcRenderer.send("query", filterMatchesObj);
 }
 
 var download = () => {
@@ -62,10 +63,20 @@ var download = () => {
   table.download("csv", string + "data.csv");
 }
 
+var downloadRawJSON = () => {
+  $('#display').dimmer('show');
+  window.setTimeout(() => {
+    var raw = ipcRenderer.sendSync("query", {});
+    ipcRenderer.sendSync("save-raw", JSON.stringify(raw));
+    $('#display').dimmer('hide');
+  }, 500);
+}
+
 var sync = () => {
   $("#display").transition("fade in", "500ms");
   $('#display').dimmer({closable:false});
   $('#display').dimmer('show');
+  filterMatches("matchFilter", "calculate();");
   ipcRenderer.once("query-stats-reply", (event, message) => {
     stats = message;
     var teamFilterList = [];

@@ -15,6 +15,7 @@ class matchLoader {
     }
     var res = {
       raw: mlObj.raw,
+      date: new Date(mlObj.timeStamp),
       hash: this.md5(mlObj.raw),
       credibility: mlObj.credibility,
       sourceTeam: mlObj.sourceTeam,

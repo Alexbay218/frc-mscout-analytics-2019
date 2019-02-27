@@ -1,4 +1,4 @@
-var syncMatch = () => {
+var syncMatch = (obj) => {
   document.getElementById("loaderText").innerText = "";
   $('#display').dimmer('show');
   ipcRenderer.once("process-match-tba-reply", () => {
@@ -27,11 +27,12 @@ var syncMatch = () => {
       table.setSort([
         {column:"date", dir:"desc"}
       ]);
+      if(tableData.length <= 0) {document.getElementById("tbaTable").innerHTML = "";}
       window.setTimeout(() => {$('#display').dimmer('hide');}, 1000);
     });
     ipcRenderer.send("query", {tbaData: null});
   });
-  ipcRenderer.send("process-match-tba", {});
+  ipcRenderer.send("process-match-tba", obj);
 }
 
 var changeDate = (data) => {

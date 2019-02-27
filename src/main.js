@@ -1,4 +1,5 @@
 const { app, BrowserWindow, dialog, Menu, ipcMain } = require('electron');
+const fs = require('fs');
 const fileLoader = require('./fileLoad.js');
 const matchDB = require('./matchDB.js');
 const consoleFiles = require('./consoleFiles.js');
@@ -46,6 +47,20 @@ app.on('ready', () => {
     });
   });
 
+  ipcMain.on("save-raw", (event, content) => {
+    dialog.showSaveDialog({defaultPath: "raw.json"}, (fileName) => {
+        if (fileName === undefined){
+            console.log("You didn't save the file");
+            event.returnValue = null;
+        }
+        else {
+          fs.writeFile(fileName, content, (err) => {
+              event.returnValue = null;
+          });
+        }
+    });
+  });
+
   ipcMain.on("open-url", (event, arg) => {
     console.log("Loading Webpage: " + arg);
     win.loadFile(arg);
@@ -64,8 +79,8 @@ app.on('ready', () => {
   });
 
   mdb = new matchDB(() => {
-    console.log("Loading Webpage: render/splash.html");
-    win.loadFile('render/splash.html');    
+    console.log("Loading Webpage: render/dashboard.html");
+    win.loadFile('render/dashboard.html');
   });
 
   fl = new fileLoader();

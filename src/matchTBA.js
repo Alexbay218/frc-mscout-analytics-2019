@@ -22,7 +22,6 @@ class matchTBA {
       xhttp.onreadystatechange = () => {
         if(xhttp.readyState == 4 && (xhttp.status == 200 || xhttp.status == 304)) {
           var obj = xhttp.status == 304 ? [matchObj.tbaData.eventData] : JSON.parse(xhttp.responseText);
-          console.log(obj);
           var tar = null;
           for(var i = 0;i < obj.length;i++) {
             var startDate = new Date(obj[i].start_date);
@@ -47,7 +46,6 @@ class matchTBA {
                 var contained = null;
                 for(var i = 0;i < obj2.length;i++) {
                   if(obj2[i].comp_level == compLvl) {
-                    console.log(obj2[i])
                     if(obj2[i].match_number == matchObj.matchNumber) {
                       for(var j = 0;j < obj2[i].alliances.blue.team_keys.length;j++) {
                         if(obj2[i].alliances.blue.team_keys[j] == "frc" + matchObj.targetTeam) {

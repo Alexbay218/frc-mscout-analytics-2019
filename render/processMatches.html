@@ -77,10 +77,18 @@
           <div class="sixteen wide column">
             <div class="ui segment">
               <h1 class="ui dividing header">Connect Match Data with TBA</h1>
-              <div class="ui fluid animated blue button" onclick="syncMatch()">
-                <div class="visible content">Sync with TBA</div>
-                <div class="hidden content">
-                  <i class="cloud download icon"></i>
+              <div class="ui fluid buttons">
+                <div class="ui animated blue button" onclick="syncMatch({tbaData: null})">
+                  <div class="visible content">Sync with TBA</div>
+                  <div class="hidden content">
+                    <i class="cloud download icon"></i>
+                  </div>
+                </div>
+                <div class="ui animated orange button" onclick="syncMatch({})">
+                  <div class="visible content">Force Resync All with TBA</div>
+                  <div class="hidden content">
+                    <i class="download icon"></i>
+                  </div>
                 </div>
               </div>
               <div class="ui divider"></div>
