@@ -1,7 +1,7 @@
 var stats = {};
 var table = {};
 
-var calculate = () => {
+var calculate = (callback = () => {}) => {
   $('#display').dimmer('show');
   ipcRenderer.once("query-reply", (event, docs) => {
     var tableData = docs;
@@ -44,23 +44,26 @@ var calculate = () => {
       pagination: "local",
       paginationSize: 12
     });
+    callback();
     $('#display').dimmer('hide');
   });
   ipcRenderer.send("query", filterMatchesObj);
 }
 
 var download = () => {
-  calculate();
-  var arr = [];
-  var string = "";
-  if(filter.targetTeam != undefined) {
-    arr = filter.targetTeam.$in;
-    arr.sort((a,b) => {return a - b});
-  }
-  for(var i = 0;i < arr.length && i < 5;i++) {
-    string += arr[i] + "-";
-  }
-  table.download("csv", string + "data.csv");
+  filterMatchesOnClick();
+  calculate(() => {
+    var arr = [];
+    var string = "";
+    if(filterMatchesObj.targetTeam != undefined) {
+      arr = filterMatchesObj.targetTeam.$in;
+      arr.sort((a,b) => {return a - b});
+    }
+    for(var i = 0;i < arr.length && i < 5;i++) {
+      string += arr[i] + "-";
+    }
+    table.download("csv", string + "data.csv");
+  });
 }
 
 var downloadRawJSON = () => {
