@@ -1,3 +1,9 @@
+var tbaTable = {};
+
+ipcRenderer.on("process-match-tba-track", (event, message) => {
+  document.getElementById("loaderText").innerText = "Processing  " + (message.position + 1) + "/" + message.total + " files";
+});
+
 var syncMatch = (obj) => {
   document.getElementById("loaderText").innerText = "";
   $('#display').dimmer('show');
@@ -9,7 +15,7 @@ var syncMatch = (obj) => {
         var str = (currDate.getMonth() + 1) + "/" + currDate.getDate() + "/" + currDate.getFullYear();
         tableData[i].date = str;
       }
-      var table = new Tabulator("#tbaTable", {
+      tbaTable = new Tabulator("#tbaTable", {
         data: tableData,
         layout: "fitColumns",
         columns: [
@@ -21,23 +27,29 @@ var syncMatch = (obj) => {
         pagination: "local",
         paginationSize: 5,
         rowClick: (e, row) => {
-          changeDate(row._row.data);
+          changeDate(row);
         }
       });
-      table.setSort([
+      tbaTable.setSort([
         {column:"date", dir:"desc"}
       ]);
       if(tableData.length <= 0) {document.getElementById("tbaTable").innerHTML = "";}
       window.setTimeout(() => {$('#display').dimmer('hide');}, 1000);
     });
-    ipcRenderer.send("query", {tbaData: null});
+    if(obj == {}) {
+      ipcRenderer.send("query", {tbaData: null});
+    }
+    else {
+      ipcRenderer.send("query", obj);
+    }
   });
   ipcRenderer.send("process-match-tba", obj);
 }
 
-var changeDate = (data) => {
+var changeDate = (row) => {
   $('#dateModal').modal("show");
-  var newObj = Object.assign({}, data);
+  var newObj = Object.assign({}, row._row.data);
+  document.getElementById("dateCal").innerHTML = "";
   $('#dateCal').calendar({
     type: 'date',
     onChange: (date) => {
@@ -46,11 +58,13 @@ var changeDate = (data) => {
       ipcRenderer.once("update-lite-reply", () => {
         ipcRenderer.once("process-match-tba-reply", () => {
           $('#dateModal').modal("hide");
-          syncMatch();
+          //syncMatch();
+          row.delete();
         });
         ipcRenderer.send("process-match-tba", {hash: newObj.hash});
       });
       ipcRenderer.send("update-lite", {filter: {hash: newObj.hash}, content: newLiteObj});
-    }
+    },
+    inline: true
   });
 }

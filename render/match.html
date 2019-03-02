@@ -1,0 +1,81 @@
+<html>
+  <head>
+    <title>FRC MScout Analytics 2019</title>
+    <link rel="shortcut icon" href="../assets/first.ico" type="image/x-icon"/>
+    <link rel="stylesheet" type="text/css" href="../semantic/dist/semantic.min.css">
+    <link rel="stylesheet" type="text/css" href="../semantic-calendar/dist/calendar.min.css">
+    <link rel="stylesheet" type="text/css" href="../calendar-heatmap/dist/calendar-heatmap.min.css">
+    <link rel="stylesheet" type="text/css" href="../tabulator-master/dist/css/semantic-ui/tabulator_semantic-ui.min.css">
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
+    <script src="../d3/d3.min.js"></script>
+    <script src="../moment/moment.min.js"></script>
+    <script src="../jquery/jquery-3.3.1.min.js"></script>
+    <script src="../semantic/dist/semantic.min.js"></script>
+    <script src="../semantic-calendar/dist/calendar.min.js"></script>
+    <script src="../calendar-heatmap/dist/calendar-heatmap.min.js"></script>
+    <script>if (window.module) module = window.module</script>
+    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />
+  </head>
+  <body style="overflow: hidden">
+    <div class="ui two column grid" style="height:100%;margin: 0px;">
+      <div class="ui two wide column inverted vertical labeled icon menu equal height grid" style="height:110%;margin-top:-3px;margin-bottom: 0px;" id="sidebar"></div>
+      <div class="ui fourteen wide column" id="display" style="visibility: hidden;overflow: auto;">
+        <div class="ui grid" id="displayGrid">
+          <div class="twelve wide column">
+            <div class="ui segment">
+              <h3 class="ui dividing header" style="margin-top: 0px;" id="titleText"></h3>
+              <div class="ui icon message">
+                <i class="id badge outline icon"></i>
+                <div class="content">
+                  <h4 class="ui header" id="teamTitle">Team ####  <i class="" id="countryFlag"></i></h4>
+                  <div class="ui two column very relaxed grid">
+                    <div class="column">
+                      <div class="ui label" id="teamRookieYear"><i class="calendar alternate outline icon"></i> <span id="teamRookieYearText"></span></div>
+                      <p></p>
+                      <div class="ui label" id="teamMotto"><i class="info circle icon"></i> <span id="teamMottoText"></span></div>
+                    </div>
+                    <div class="column">
+                      <a href="#" class="ui red right ribbon label" id="teamUrl"></a>
+                      <p></p>
+                      <a href="#" class="ui blue right ribbon label" id="tbaUrl"></a>
+                    </div>
+                    <div class="ui hidden vertical divider"></div>
+                  </div>
+                </div>
+              </div>
+              <div class="ui icon message">
+                <i class="quote left icon"></i>
+                <div class="content">
+                  <h4 class="ui header">Comment</h4>
+                  <div style="word-break: break-word" id="titleComment"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="four wide column">
+            <div class="ui segment">
+              <h3 class="ui dividing header" style="margin-top: 0px;">TBA Data</h3>
+              <div id="tbaData">
+                <div class="ui icon message">
+                  <i class="exclamation circle icon"></i>
+                  <div class="content">
+                    <div class="header">No TBA Data</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="ui dimmer">
+          <div class="ui text loader" id="loaderText"></div>
+        </div>
+      </div>
+    </div>
+    <script src="filter.js"></script>
+    <script src="route.js"></script>
+    <script src="process.js"></script>
+    <script src="charts.js"></script>
+    <script src="match.js"></script>
+  </body>
+</html>

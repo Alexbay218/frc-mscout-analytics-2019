@@ -37,7 +37,7 @@ class matchLoader {
       fieldCrossings: this.getCrossFieldData()
     };
     res.matchData.scoreData = this.getScoreIntervals();
-    res.tbaData = null;
+    res.tbaData = mlObj.tbaData;
     return res;
   }
   getLineData() {

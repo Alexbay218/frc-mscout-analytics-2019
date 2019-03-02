@@ -55,6 +55,21 @@ var filterMatches = (elemIdStr, callbackStr, showTeam = true) => {
     "<label>Finals Match</label>" +
   "</div></div>");
   $("#filterFinals").checkbox("check");
+  mainElem.insertAdjacentHTML("beforeend", "<div class=\"inline fields\" id=\"filterTBAData\"></div>");
+  var elem = document.getElementById("filterTBAData");
+  elem.insertAdjacentHTML("beforeend", "<div class=\"field\"><div class=\"ui radio checkbox\" id=\"filterNoTBA\">" +
+    "<input type=\"radio\" name=\"tba\">" +
+    "<label>No TBA Data</label>" +
+  "</div></div>");
+  elem.insertAdjacentHTML("beforeend", "<div class=\"field\"><div class=\"ui radio checkbox\" id=\"filterSomeTBA\">" +
+    "<input type=\"radio\" name=\"tba\">" +
+    "<label>Both</label>" +
+  "</div></div>");
+  $("#filterSomeTBA").checkbox("check")
+  elem.insertAdjacentHTML("beforeend", "<div class=\"field\"><div class=\"ui radio checkbox\" id=\"filterOnlyTBA\">" +
+    "<input type=\"radio\" name=\"tba\">" +
+    "<label>Only TBA Data</label>" +
+  "</div></div>");
   if(showTeam) {
     mainElem.insertAdjacentHTML("beforeend", "<div class=\"fields\" id=\"filterTeamSubmit\"></div>");
     var elem = document.getElementById("filterTeamSubmit");
@@ -95,6 +110,8 @@ var filterMatchesOnClick = () => {
   if($("#filterQuarterfinals").checkbox("is checked")) {mtArr.push("QF");}
   if($("#filterSemifinals").checkbox("is checked")) {mtArr.push("SF");}
   if($("#filterFinals").checkbox("is checked")) {mtArr.push("F");}
+  if($("#filterNoTBA").checkbox("is checked")) {filterMatchesObj.tbaData = null;}
+  if($("#filterOnlyTBA").checkbox("is checked")) {filterMatchesObj.tbaData = {$ne: null};}
   if(mtArr.length > 0) {filterMatchesObj.matchType = {$in: mtArr};}
   if(document.getElementById("filterTeamDropdown") != null) {
     var tArr = $("#filterTeamDropdown").dropdown("get value").split(",");

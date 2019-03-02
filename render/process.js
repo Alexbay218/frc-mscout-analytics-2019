@@ -127,7 +127,7 @@ var arrsDate = (docs, arg1, arrArg2) => {
       sum += docs[i][arg1][arrArg2[j]];
     }
     res.push({
-      t: docs[i].date.valueOf(),
+      t: docs[i].timeStamp,
       y: sum
     });
   }

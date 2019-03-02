@@ -60,7 +60,7 @@ class matchDB {
       run();
     });
   }
-  processWithTBA(arg, callback = () => {}) {
+  processWithTBA(arg, callback = () => {}, event = null) {
     this.dbml.find(arg, (err, docs) => {
       var index = 0;
       var run = () => {
@@ -71,6 +71,9 @@ class matchDB {
             docs[index].tbaData = res.tbaData;
             this.dbml.update({hash: res.hash}, docs[index], {upsert: true}, () => {
               this.dbm.update({hash: res.hash}, res, {upsert: true}, () => {
+                if(event != null) {
+                  event.sender.send("process-match-tba-track", {position: index, total: docs.length});
+                }
                 index++;
                 run();
               });
@@ -204,7 +207,7 @@ class matchDB {
       this.processWithTBA(arg, () => {
         event.sender.send("process-match-tba-reply", {});
         event.returnValue = {};
-      });
+      }, event);
     });
   }
 }

@@ -21,7 +21,7 @@
     <div class="ui two column grid" style="height:100%;margin: 0px;">
       <div class="ui two wide column inverted vertical labeled icon menu equal height grid" style="height:110%;margin-top:-3px;margin-bottom: 0px;" id="sidebar"></div>
       <div class="ui fourteen wide column" id="display" style="visibility: hidden;overflow: auto;">
-        <div class="ui grid">
+        <div class="ui grid" id="displayGrid">
           <div class="sixteen wide column">
             <div class="ui segment">
               <div class="ui fluid action labeled input">
@@ -83,66 +83,6 @@
               <div id="matchTable"></div>
             </div>
           </div>
-          <div class="eight wide column">
-            <div class="ui segment">
-              <h3 class="ui right aligned dividing header" style="margin-top: 0px;">Cargo vs Hatch by Time</h3>
-              <canvas id="cvht"></canvas>
-            </div>
-          </div>
-          <div class="eight wide column">
-            <div class="ui segment">
-              <h3 class="ui dividing header" style="margin-top: 0px;">Cargo vs Hatch by Attempts</h3>
-              <canvas id="cvha"></canvas>
-            </div>
-          </div>
-          <div class="eight wide column">
-            <div class="ui segment">
-              <h3 class="ui right aligned dividing header" style="margin-top: 0px;">Cargo vs Hatch by Score</h3>
-              <canvas id="cvhs"></canvas>
-            </div>
-          </div>
-          <div class="eight wide column">
-            <div class="ui segment">
-              <h3 class="ui dividing header" style="margin-top: 0px;">Cargo Ship vs Rocket Levels by Time</h3>
-              <canvas id="csvrt"></canvas>
-            </div>
-          </div>
-          <div class="eight wide column">
-            <div class="ui segment">
-              <h3 class="ui right aligned dividing header" style="margin-top: 0px;">Cargo Ship vs Rocket Levels by Attempts</h3>
-              <canvas id="csvra"></canvas>
-            </div>
-          </div>
-          <div class="eight wide column">
-            <div class="ui segment">
-              <h3 class="ui dividing header" style="margin-top: 0px;">Cargo Ship vs Rocket Levels by Score</h3>
-              <canvas id="csvrs"></canvas>
-            </div>
-          </div>
-          <div class="eight wide column">
-            <div class="ui segment">
-              <h3 class="ui right aligned dividing header" style="margin-top: 0px;">Scoring Types by Time</h3>
-              <canvas id="svdt"></canvas>
-            </div>
-          </div>
-          <div class="eight wide column">
-            <div class="ui segment">
-              <h3 class="ui dividing header" style="margin-top: 0px;">Scoring Types by Score</h3>
-              <canvas id="svds"></canvas>
-            </div>
-          </div>
-          <div class="sixteen wide column">
-            <div class="ui segment">
-              <h3 class="ui dividing header" style="margin-top: 0px;">Scoring over Time (Cargo vs Hatch)</h3>
-              <canvas id="sot"></canvas>
-            </div>
-          </div>
-          <div class="sixteen wide column">
-            <div class="ui segment">
-              <h3 class="ui dividing header" style="margin-top: 0px;">Scoring over Time (Cargo Ship vs Rocket)</h3>
-              <canvas id="cvhot"></canvas>
-            </div>
-          </div>
         </div>
         <div class="ui dimmer">
           <div class="ui text loader" id="loaderText"></div>
@@ -152,6 +92,7 @@
     <script src="filter.js"></script>
     <script src="route.js"></script>
     <script src="process.js"></script>
+    <script src="charts.js"></script>
     <script src="team.js"></script>
   </body>
 </html>

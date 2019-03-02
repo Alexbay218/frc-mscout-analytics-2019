@@ -78,7 +78,7 @@
             <div class="ui segment">
               <h1 class="ui dividing header">Connect Match Data with TBA</h1>
               <div class="ui fluid buttons">
-                <div class="ui animated blue button" onclick="syncMatch({tbaData: null})">
+                <div class="ui animated blue button" onclick="syncMatch({tbaData: null, matchType: {$in: ['Q', 'QF', 'SF', 'F']}})">
                   <div class="visible content">Sync with TBA</div>
                   <div class="hidden content">
                     <i class="cloud download icon"></i>

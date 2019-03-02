@@ -27,8 +27,8 @@ var query = () => {
       pagination: "local",
       paginationSize: 7,
       rowClick: (e, row) => {
-        ipcRenderer.sendSync("set-metadata", {targetTeam: row._row.data.team_number});
-        ipcRenderer.sendSync("open-url","render/team.html");
+        ipcRenderer.sendSync("set-metadata", row._row.data);
+        ipcRenderer.sendSync("open-url","render/match.html");
       }
     });
     $('#display').dimmer('hide');
