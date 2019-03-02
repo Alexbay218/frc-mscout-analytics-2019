@@ -33,7 +33,7 @@ var syncTeam = () => {
   ipcRenderer.send("query-team-sync", true);
 }
 
-ipcRenderer.once("query-team-sync-track", (event, message) => {
+ipcRenderer.on("query-team-sync-track", (event, message) => {
   if(message.position >= 0) {
     document.getElementById("loaderText").innerText = "Syncing  " + (message.position + 1) + " teams\n[Teams from " + message.page * 500 + " to " + (message.page+1)*500 + "]";
   }
